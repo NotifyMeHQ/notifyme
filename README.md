@@ -89,9 +89,15 @@ You can override the service configuration and set specific service options on t
 
 ```php
 
-// Interface
+// Interface example
 
-$notifyme->driver($diver)->notify($message, array $params);
+$notifyme->driver($diver)->notify($message, $params);
+
+```
+
+```php
+
+// Gateways example
 
 $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
