@@ -46,7 +46,9 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Get the default driver name.
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
+     * 
+     * @return string
      */
     public function getDefaultDriver()
     {
