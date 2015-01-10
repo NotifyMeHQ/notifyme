@@ -28,7 +28,6 @@ class Slack extends AbstractGateway implements Notifier
     {
         $this->requires($config, ['token']);
 
-        $config['token'] = $config['token'];
         $config['username'] = $this->array_get($config, 'from', '');
 
         $this->config = $config;
@@ -54,14 +53,14 @@ class Slack extends AbstractGateway implements Notifier
      * @param  string   $message
      * @param  string[] $params
      * @param  string[] $options
-     * 
+     *
      * @return array
      */
     protected function addMessage($message, array $params, array $options)
     {
         $params['token'] = $this->array_get($options, 'token', $this->config['token']);
         $params['username'] = $this->array_get($options, 'from', $this->config['from']);
-        $params['channel'] = $this->array_get($options, 'channel', '');
+        $params['channel'] = $this->array_get($options, 'to', '');
         $params['text'] = $this->formatMessage($message);
 
         return $params;
@@ -150,7 +149,7 @@ class Slack extends AbstractGateway implements Notifier
      * Default JSON response.
      *
      * @param  string $rawResponse
-     * 
+     *
      * @return array
      */
     public function jsonError($rawResponse)

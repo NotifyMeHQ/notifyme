@@ -5,51 +5,35 @@ namespace Dinkbit\Notifyme\Gateways;
 use Dinkbit\Notifyme\Contracts\Notifier;
 use Dinkbit\Notifyme\Response;
 
-class HipChat extends AbstractGateway implements Notifier
+class Twilio extends AbstractGateway implements Notifier
 {
     /**
      * Gateway API endpoint.
      *
      * @var string
      */
-    protected $endpoint = 'https://api.hipchat.com';
+    protected $endpoint = 'https://api.twilio.com';
 
     /**
      * Gateway display name.
      *
      * @var string
      */
-    protected $displayName = 'hipchat';
+    protected $displayName = 'twilio';
 
     /**
-     * HipChat API version.
+     * Twillio API version.
      *
      * @var string
      */
-    protected $version = 'v2';
-
-    /**
-     * HipChat message background color.
-     *
-     * @var string
-     */
-    protected $colors = [
-        'yellow',
-        'red',
-        'gray',
-        'green',
-        'purple',
-        'random',
-    ];
+    protected $version = '2010-04-01';
 
     /**
      * {@inheritdoc}
      */
     public function __construct($config)
     {
-        $this->requires($config, ['token']);
-
-        $config['from'] = $this->array_get($config, 'from', '');
+        $this->requires($config, ['from', 'client', 'token']);
 
         $this->config = $config;
     }
@@ -61,11 +45,15 @@ class HipChat extends AbstractGateway implements Notifier
     {
         $params = [];
 
-        $room = $this->array_get($options, 'to', '');
+        $this->config['client'] = $this->array_get($options, 'client', $this->config['client']);
+        $this->config['token'] = $this->array_get($options, 'token', $this->config['token']);
+
+        unset($options['client']);
+        unset($options['token']);
 
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString("room/{$room}/message"), $params);
+        return $this->commit('post', $this->buildUrlFromString('Accounts/'.$this->config['client'].'/SMS/Messages.json'), $params);
     }
 
     /**
@@ -79,21 +67,9 @@ class HipChat extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['auth_token'] = $this->array_get($options, 'token', $this->config['token']);
-
-        $params['id'] = $this->array_get($options, 'to', '');
-        $params['from'] = $this->array_get($options, 'from', $this->config['from']);
-
-        $color = $this->array_get($options, 'color', 'yellow');
-
-        if (! in_array($color, $this->colors)) {
-            $color = 'yellow';
-        }
-
-        $params['color'] = $color;
-        $params['message'] = $message;
-        $params['notify'] = $this->array_get($options, 'notify', false);
-        $params['message_format'] = $this->array_get($options, 'format', 'text');
+        $params['From'] = $this->array_get($options, 'from', $this->config['from']);
+        $params['To'] = $this->array_get($options, 'to', '');
+        $params['Body'] = $message;
 
         return $params;
     }
@@ -105,23 +81,25 @@ class HipChat extends AbstractGateway implements Notifier
     {
         $success = false;
 
-        $token = $params['auth_token'];
-
-        unset($params['auth_token']);
-
         $rawResponse = $this->getHttpClient()->{$method}($url, [
             'exceptions' => false,
             'timeout' => '80',
             'connect_timeout' => '30',
-            'headers' => [
-                'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer ' . $token,
+            'verify' => true,
+            'auth' => [
+                $this->config['client'],
+                $this->config['token'],
             ],
-            'json' => $params,
+            'headers' => [
+                'Accept-Charset' => 'utf-8',
+                'Content-Type'   => 'application/x-www-form-urlencoded',
+                'User-Agent'     => 'notifyme/3.12.8 (php '.phpversion().')',
+            ],
+            'body' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 204) {
-            $response = [];
+        if ($rawResponse->getStatusCode() == 201) {
+            $response = $this->parseResponse($rawResponse->getBody());
             $success = true;
         } else {
             $response = $this->responseError($rawResponse);
@@ -137,7 +115,7 @@ class HipChat extends AbstractGateway implements Notifier
     {
         return (new Response)->setRaw($response)->map([
             'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error']['message'],
+            'message'       => $success ? 'Message sent' : $response['message'],
         ]);
     }
 
@@ -182,9 +160,7 @@ class HipChat extends AbstractGateway implements Notifier
         $msg .= " (Raw response API {$rawResponse->getBody()})";
 
         return [
-            'error' => [
-                'message' => $msg,
-            ],
+            'message' => $msg,
         ];
     }
 

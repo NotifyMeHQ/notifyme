@@ -43,6 +43,18 @@ class NotifymeManager extends Manager implements Contracts\Factory
     }
 
     /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Dinkbit\Notifyme\Gateways\Twilio
+     */
+    protected function createTwilioDriver()
+    {
+        $config = $this->app['config']['services.twilio'];
+
+        return new \Dinkbit\Notifyme\Gateways\Twilio($config);
+    }
+
+    /**
      * Get the default driver name.
      *
      * @throws \InvalidArgumentException

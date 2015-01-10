@@ -7,15 +7,27 @@ Provides a common interface for notification services.
 Supported Gateways:
 * Slack
 * HipChat
-* Twilio (soon)
+* Twilio
 
 ### Add Configuration
 
 First, you should configure the authentication providers you would like to use in your `config/services.php` file.
 
-	'slack' => [
-		'token' => 'your-token',
-	],
+	return [
+		'slack' => [
+			'from' 	=> 'notifyme', 
+			'token' => '',
+		],
+		'hipchat' => [
+			'from' 	=> 'notifyme', 
+			'token' => '',
+		],
+		'twilio' => [
+			'from'	 => '', // Phone
+			'client' => '', // Sid
+			'token'  => '', 
+		]
+	];
 
 ### Examples
 
@@ -34,7 +46,7 @@ public function storePost()
 {
     $post = Post::create(Input::all());
 
-    $notifyme->driver('slack')->notify($post->title, ['channel' => '#everybody']);
+    $notifyme->driver('slack')->notify($post->title, ['to' => '#everybody']);
 }
 
 ```
@@ -43,9 +55,9 @@ You can override the service configuration and set specific service options on t
 
 ```php
 
-$notifyme->driver('slack')->notify('You did it!', ['channel' => '#everybody']);
+$notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
-$notifyme->driver('hipchat')->notify('You did it!', ['channel' => 'everybody', 'notify' => true]);
+$notifyme->driver('hipchat')->notify('You did it!', ['to' => 'everybody', 'notify' => true]);
 
 ```
 
