@@ -58,6 +58,8 @@ First, you should configure the authentication providers you would like to use i
 
 use Dinkbit\Notifyme\Contracts\Factory as Notifyme;
 
+protected $notifyme;
+
 public function __construct(Notifyme $notifyme)
 {
     $this->notifyme = $notifyme;
@@ -67,14 +69,23 @@ public function storePost()
 {
     $post = Post::create(Input::all());
 
-    $notifyme->driver('slack')->notify($post->title, ['to' => '#everybody']);
+    $response = $notifyme->driver('slack')->notify($post->title, ['to' => '#everybody']);
+
+    if (! $response->isSent()) {
+    	return ':(';
+    }
+
+    return 'Hurray!';
 }
 
 ```
 
-You can override the service configuration and set specific service options on the secondarray.
+You can override the service configuration and set specific service options on the second array.
 
 ```php
+
+// Interface
+$notifyme->driver($diver)->notify($message, array $params);
 
 $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
