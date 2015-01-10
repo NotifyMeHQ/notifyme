@@ -9,7 +9,7 @@ Supported Gateways:
 * Twilio
 * Campfire
 * Gitter
-* PagerDuty (soon)
+* PagerDuty
 * Webhook (soon)
 
 ## Installation
@@ -53,6 +53,9 @@ First, you should configure the authentication providers you would like to use i
 			'token' => '',
 		],
 		'gitter' => [
+			'token' => '',
+		],
+		'pagerduty' => [
 			'token' => '',
 		],
 	];
@@ -111,10 +114,11 @@ $notifyme->driver('campfire')->notify('You did it!', ['to' => '1234']);
 
 $notifyme->driver('gitter')->notify('You did it!', ['to' => ':roomId']);
 
+$notifyme->driver('pagerduty')->notify('This is working awesome!', ['to' => ':incident_key']);
+
 ```
 
 ### Todo
 
 - [ ] Add tests
 - [ ] Add docs
-- [ ] Add more gateways

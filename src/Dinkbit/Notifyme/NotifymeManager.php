@@ -5,6 +5,7 @@ namespace Dinkbit\Notifyme;
 use Dinkbit\Notifyme\Gateways\Campfire;
 use Dinkbit\Notifyme\Gateways\Gitter;
 use Dinkbit\Notifyme\Gateways\HipChat;
+use Dinkbit\Notifyme\Gateways\PagerDuty;
 use Dinkbit\Notifyme\Gateways\Slack;
 use Dinkbit\Notifyme\Gateways\Twilio;
 use Illuminate\Support\Manager;
@@ -82,6 +83,18 @@ class NotifymeManager extends Manager implements Contracts\Factory
         $config = $this->app['config']['services.gitter'];
 
         return new Gitter($config);
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Dinkbit\Notifyme\Gateways\PagerDuty
+     */
+    protected function createPagerdutyDriver()
+    {
+        $config = $this->app['config']['services.pagerduty'];
+
+        return new PagerDuty($config);
     }
 
     /**
