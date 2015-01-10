@@ -59,6 +59,8 @@ $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
 $notifyme->driver('hipchat')->notify('You did it!', ['to' => 'everybody', 'notify' => true]);
 
+$notifyme->driver('twilio')->notify('You did it!', ['to' => '+15005550001']);
+
 ```
 
 ### Todo
