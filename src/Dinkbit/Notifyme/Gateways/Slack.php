@@ -138,11 +138,7 @@ class Slack extends AbstractGateway implements Notifier
      */
     protected function responseError($rawResponse)
     {
-        if (! $this->isJson($rawResponse->getBody())) {
-            return $this->jsonError($rawResponse);
-        }
-
-        return $this->parseResponse($rawResponse->getBody());
+        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
     }
 
     /**
@@ -160,20 +156,6 @@ class Slack extends AbstractGateway implements Notifier
         return [
             'error' => $msg,
         ];
-    }
-
-    /**
-     * Check if string is a valid JSON.
-     *
-     * @param string $string
-     *
-     * @return bool
-     */
-    protected function isJson($string)
-    {
-        json_decode($string);
-
-        return (json_last_error() == JSON_ERROR_NONE);
     }
 
     /**
