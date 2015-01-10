@@ -90,6 +90,7 @@ You can override the service configuration and set specific service options on t
 ```php
 
 // Interface
+
 $notifyme->driver($diver)->notify($message, array $params);
 
 $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
@@ -97,6 +98,8 @@ $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 $notifyme->driver('hipchat')->notify('You did it!', ['to' => 'everybody', 'notify' => true]);
 
 $notifyme->driver('twilio')->notify('You did it!', ['to' => '+15005550001']);
+
+$notifyme->driver('campfire')->notify('You did it!', ['to' => '1234']);
 
 ```
 
