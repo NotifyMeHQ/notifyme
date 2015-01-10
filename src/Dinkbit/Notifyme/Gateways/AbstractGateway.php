@@ -23,10 +23,11 @@ abstract class AbstractGateway implements GatewayContract
     /**
      * Commit a HTTP request.
      *
-     * @param  string   $method
-     * @param  string   $url
-     * @param  string[] $params
-     * @param  string[] $options
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
      * @return mixed
      */
     abstract protected function commit($method = 'post', $url, $params = [], $options = []);
@@ -34,8 +35,8 @@ abstract class AbstractGateway implements GatewayContract
     /**
      * Map HTTP response to response object.
      *
-     * @param  bool  $success
-     * @param  array $response
+     * @param bool  $success
+     * @param array $response
      *
      * @return \Dinkbit\Notifyme\Response
      */
@@ -65,27 +66,27 @@ abstract class AbstractGateway implements GatewayContract
      */
     protected function getHttpClient()
     {
-        return new \GuzzleHttp\Client;
+        return new \GuzzleHttp\Client();
     }
 
     /**
      * Build requirest url from string.
      *
-     * @param  string $endpoint
+     * @param string $endpoint
      *
      * @return string
      */
     protected function buildUrlFromString($endpoint)
     {
-        return $this->getRequestUrl() . '/' . $endpoint;
+        return $this->getRequestUrl().'/'.$endpoint;
     }
 
     /**
      * Get value from array or provide default.
      *
-     * @param  array  $array
-     * @param  string $key
-     * @param  null   $default
+     * @param array  $array
+     * @param string $key
+     * @param null   $default
      *
      * @return mixed
      */
@@ -97,8 +98,8 @@ abstract class AbstractGateway implements GatewayContract
     /**
      * Require specific config values.
      *
-     * @param  string[] $options
-     * @param  string[] $required
+     * @param string[] $options
+     * @param string[] $required
      *
      * @return bool
      */
@@ -108,6 +109,7 @@ abstract class AbstractGateway implements GatewayContract
             if (! array_key_exists(trim($key), $options)) {
                 throw new \InvalidArgumentException("Missing required parameter: {$key}");
                 break;
+
                 return false;
             }
         }

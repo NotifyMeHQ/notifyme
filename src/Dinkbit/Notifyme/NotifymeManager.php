@@ -2,15 +2,16 @@
 
 namespace Dinkbit\Notifyme;
 
-use InvalidArgumentException;
 use Illuminate\Support\Manager;
+use InvalidArgumentException;
 
 class NotifymeManager extends Manager implements Contracts\Factory
 {
     /**
      * Get a driver instance.
      *
-     * @param  string  $driver
+     * @param string $driver
+     *
      * @return mixed
      */
     public function with($driver)

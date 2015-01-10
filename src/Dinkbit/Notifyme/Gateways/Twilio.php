@@ -59,9 +59,9 @@ class Twilio extends AbstractGateway implements Notifier
     /**
      * Add a message to the request.
      *
-     * @param  string   $message
-     * @param  string[] $params
-     * @param  string[] $options
+     * @param string   $message
+     * @param string[] $params
+     * @param string[] $options
      *
      * @return array
      */
@@ -82,11 +82,11 @@ class Twilio extends AbstractGateway implements Notifier
         $success = false;
 
         $rawResponse = $this->getHttpClient()->{$method}($url, [
-            'exceptions' => false,
-            'timeout' => '80',
+            'exceptions'      => false,
+            'timeout'         => '80',
             'connect_timeout' => '30',
-            'verify' => true,
-            'auth' => [
+            'verify'          => true,
+            'auth'            => [
                 $this->config['client'],
                 $this->config['token'],
             ],
@@ -113,7 +113,7 @@ class Twilio extends AbstractGateway implements Notifier
      */
     public function mapResponse($success, $response)
     {
-        return (new Response)->setRaw($response)->map([
+        return (new Response())->setRaw($response)->map([
             'success'       => $success,
             'message'       => $success ? 'Message sent' : $response['message'],
         ]);
@@ -134,7 +134,7 @@ class Twilio extends AbstractGateway implements Notifier
     /**
      * Get error response from server or fallback to general error.
      *
-     * @param  string $rawResponse
+     * @param string $rawResponse
      *
      * @return array
      */
@@ -150,7 +150,7 @@ class Twilio extends AbstractGateway implements Notifier
     /**
      * Default JSON response.
      *
-     * @param  string $rawResponse
+     * @param string $rawResponse
      *
      * @return array
      */
@@ -167,7 +167,7 @@ class Twilio extends AbstractGateway implements Notifier
     /**
      * Check if string is a valid JSON.
      *
-     * @param  string $string
+     * @param string $string
      *
      * @return bool
      */

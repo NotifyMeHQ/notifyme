@@ -22,7 +22,7 @@ class Response
     }
 
     /**
-     * The response message from the payment gateway
+     * The response message from the payment gateway.
      *
      * @return string.
      */
@@ -30,9 +30,9 @@ class Response
     {
         return $this->message;
     }
-    
+
     /**
-     * Gateway raw data
+     * Gateway raw data.
      *
      * @return array
      */
@@ -44,7 +44,7 @@ class Response
     /**
      * Set the raw response array from the gateway.
      *
-     * @param  array $response
+     * @param array $response
      *
      * @return $this
      */
@@ -57,7 +57,7 @@ class Response
     /**
      * Map the given array onto the response's properties.
      *
-     * @param  array $attributes
+     * @param array $attributes
      *
      * @return $this
      */
