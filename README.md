@@ -1,13 +1,34 @@
 # Notifyme
 [![Build Status](https://img.shields.io/travis/dinkbit/notifyme.svg?style=flat-square)](https://travis-ci.org/dinkbit/notifyme)
 
-
-Provides a common interface for notification services.
+Common interface for notification services.
 
 Supported Gateways:
 * Slack
 * HipChat
 * Twilio
+* Campfire (soon)
+* Gitter (soon)
+* PagerDuty (soon)
+* Webhook (soon)
+
+### Install
+
+## Laravel 4.2 and Below
+
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `dinkbit/notifyme`.
+
+	"require": {
+		"dinkbit/notifyme": "dev-master"
+	}
+
+Next, update Composer from the Terminal:
+
+    composer update
+
+Once this operation completes, the final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+
+    'Dinkbit\Notifyme\NotifymeServiceProvider'
 
 ### Add Configuration
 
