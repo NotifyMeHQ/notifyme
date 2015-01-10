@@ -1,4 +1,6 @@
 # Dinkbit Notifyme
+[![Build Status](https://img.shields.io/travis/dinkbit/notifyme.svg?style=flat-square)](https://travis-ci.org/dinkbit/notifyme)
+
 
 Provides a common interface for notification services.
 
