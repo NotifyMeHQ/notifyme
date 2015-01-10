@@ -4,6 +4,10 @@ namespace Dinkbit\Notifyme;
 
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
+use Dinkbit\Notifyme\Gateways\Campfire;
+use Dinkbit\Notifyme\Gateways\HipChat;
+use Dinkbit\Notifyme\Gateways\Slack;
+use Dinkbit\Notifyme\Gateways\Twilio;
 
 class NotifymeManager extends Manager implements Contracts\Factory
 {
@@ -28,7 +32,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     {
         $config = $this->app['config']['services.slack'];
 
-        return new \Dinkbit\Notifyme\Gateways\Slack($config);
+        return new Slack($config);
     }
 
     /**
@@ -40,7 +44,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     {
         $config = $this->app['config']['services.hipchat'];
 
-        return new \Dinkbit\Notifyme\Gateways\HipChat($config);
+        return new HipChat($config);
     }
 
     /**
@@ -52,7 +56,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     {
         $config = $this->app['config']['services.twilio'];
 
-        return new \Dinkbit\Notifyme\Gateways\Twilio($config);
+        return new Twilio($config);
     }
 
     /**
@@ -64,7 +68,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     {
         $config = $this->app['config']['services.campfire'];
 
-        return new \Dinkbit\Notifyme\Gateways\Campfire($config);
+        return new Campfire($config);
     }
 
     /**
