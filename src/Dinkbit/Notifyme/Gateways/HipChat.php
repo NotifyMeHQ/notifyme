@@ -162,11 +162,7 @@ class HipChat extends AbstractGateway implements Notifier
      */
     protected function responseError($rawResponse)
     {
-        if (! $this->isJson($rawResponse->getBody())) {
-            return $this->jsonError($rawResponse);
-        }
-
-        return $this->parseResponse($rawResponse->getBody());
+        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
     }
 
     /**
@@ -186,20 +182,6 @@ class HipChat extends AbstractGateway implements Notifier
                 'message' => $msg,
             ],
         ];
-    }
-
-    /**
-     * Check if string is a valid JSON.
-     *
-     * @param string $string
-     *
-     * @return bool
-     */
-    protected function isJson($string)
-    {
-        json_decode($string);
-
-        return (json_last_error() == JSON_ERROR_NONE);
     }
 
     /**
