@@ -22,18 +22,6 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Mail
-     */
-    protected function createMailDriver()
-    {
-        $config = $this->app['config']['services.mail'];
-
-        return new \Dinkbit\Notifyme\Gateways\Mail($config);
-    }
-
-    /**
-     * Create an instance of the specified driver.
-     *
      * @return \Dinkbit\Notifyme\Gateways\Slack
      */
     protected function createSlackDriver()

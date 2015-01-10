@@ -1,11 +1,13 @@
 {
     "name": "dinkbit/notifyme",
-    "description": "Use multiple integrations of notification services",
+    "description": "Provides a common interface for notification services",
     "license": "MIT",
     "keywords": [
         "notifyme",
         "notifications",
         "integrations",
+        "slack",
+        "hipchat",
         "laravel",
         "dinkbit"
     ],

@@ -5,10 +5,19 @@ namespace Dinkbit\Notifyme\Gateways;
 use Dinkbit\Notifyme\Contracts\Notifier;
 use Dinkbit\Notifyme\Response;
 
-class Slack extends AbstractGateway implements Notifier {
+class HipChat extends AbstractGateway implements Notifier {
 
-    protected $endpoint = 'https://slack.com/api';
-    protected $displayName = 'slack';
+    protected $endpoint = 'https://api.hipchat.com';
+    protected $displayName = 'hipchat';
+
+    protected $colors = [
+        'yellow',
+        'red',
+        'gray',
+        'green',
+        'purple',
+        'random',
+    ];
 
     /**
      * {@inheritdoc}
@@ -30,11 +39,11 @@ class Slack extends AbstractGateway implements Notifier {
     {
         $params = [];
 
-        $params['unfurl_links'] = true;
-
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString('chat.postMessage'), $params);
+        $room = $this->array_get($options, 'channel', '');
+
+        return $this->commit('post', $this->buildUrlFromString("v2/room/{$room}/message"), $params);
     }
 
     /**
@@ -47,28 +56,16 @@ class Slack extends AbstractGateway implements Notifier {
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['username'] = $this->array_get($options, 'from', $this->config['from']);
-        $params['channel'] = $this->array_get($options, 'channel', '');
-        $params['text'] = $this->formatMessage($message);
+        $params['auth_token'] = $this->array_get($options, 'token', $this->config['token']);
+
+        $params['id'] = $this->array_get($options, 'channel', '');
+        $params['from'] = $this->array_get($options, 'from', $this->config['from']);
+        $params['color'] = $this->array_get($options, 'color', 'yellow');
+        $params['message'] = $message;
+        $params['notify'] = $this->array_get($options, 'notify', false);
+        $params['message_format'] = $this->array_get($options, 'format', 'text');
 
         return $params;
-    }
-
-    /**
-     * Formats a string for Slack.
-     *
-     * @param  string $string
-     * 
-     * @return string
-     */
-    public function formatMessage($string)
-    {
-        $string = str_replace('&', '&amp;', $string);
-        $string = str_replace('<', '&lt;', $string);
-        $string = str_replace('>', '&gt;', $string);
-
-        return $string;
     }
 
     /**
@@ -78,17 +75,25 @@ class Slack extends AbstractGateway implements Notifier {
     {
         $success = false;
 
+        $token = $params['auth_token'];
+
+        unset($params['auth_token']);
+
         $rawResponse = $this->getHttpClient()->{$method}($url, [
             'exceptions' => false,
             'timeout' => '80',
             'connect_timeout' => '30',
-            'body' => $params,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $token,
+            ],
+            'json' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 200)
+        if ($rawResponse->getStatusCode() == 204)
         {
-            $response = $this->parseResponse($rawResponse->getBody());
-            $success = $response['ok'];
+            $response = [];
+            $success = true;
         }
         else
         {
@@ -105,7 +110,7 @@ class Slack extends AbstractGateway implements Notifier {
     {
         return (new Response)->setRaw($response)->map([
             'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error'],
+            'message'       => $success ? 'Message sent' : $response['error']['message'],
         ]);
     }
 
@@ -142,7 +147,9 @@ class Slack extends AbstractGateway implements Notifier {
         $msg .= " (Raw response API {$rawResponse->getBody()})";
 
         return [
-            'error' => $msg,
+            'error' => [
+                'message' => $msg,
+            ],
         ];
     }
 
