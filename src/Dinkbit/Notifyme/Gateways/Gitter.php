@@ -5,75 +5,37 @@ namespace Dinkbit\Notifyme\Gateways;
 use Dinkbit\Notifyme\Contracts\Notifier;
 use Dinkbit\Notifyme\Response;
 
-class Campfire extends AbstractGateway implements Notifier
+class Gitter extends AbstractGateway implements Notifier
 {
     /**
      * Gateway API endpoint.
      *
      * @var string
      */
-    protected $endpoint = 'https://{domain}.campfirenow.com';
+    protected $endpoint = 'https://api.gitter.im';
 
     /**
      * Gateway display name.
      *
      * @var string
      */
-    protected $displayName = 'campfire';
+    protected $displayName = 'gitter';
 
     /**
-     * Campfire allowed message types.
+     * Gitter API version.
      *
      * @var string
      */
-    protected $allowedTypeMessages = [
-        'TextMessage',
-        'PasteMessage',
-        'TweetMessage',
-        'SoundMessage',
-    ];
-
-    /**
-     * Campfire allowed sound types.
-     *
-     * @var string
-     */
-    protected $allowedSounds = [
-        // hard to keep this list up-to-date
-        '56k',
-        'bueller',
-        'crickets',
-        'dangerzone',
-        'deeper',
-        'drama',
-        'greatjob',
-        'horn',
-        'horror',
-        'inconceivable',
-        'live',
-        'loggins',
-        'noooo',
-        'nyan',
-        'ohmy',
-        'ohyeah',
-        'pushit',
-        'rimshot',
-        'sax',
-        'secret',
-        'tada',
-        'tmyk',
-        'trombone',
-        'vuvuzela',
-        'yeah',
-        'yodel',
-    ];
+    protected $version = 'v1';
 
     /**
      * {@inheritdoc}
      */
     public function __construct($config)
     {
-        $this->requires($config, ['from', 'token']);
+        $this->requires($config, ['token']);
+
+        $config['from'] = $this->array_get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -89,7 +51,7 @@ class Campfire extends AbstractGateway implements Notifier
 
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString("room/{$room}/speak.json"), $params);
+        return $this->commit('post', $this->buildUrlFromString("rooms/{$room}/chatMessages"), $params);
     }
 
     /**
@@ -104,21 +66,8 @@ class Campfire extends AbstractGateway implements Notifier
     protected function addMessage($message, array $params, array $options)
     {
         $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['from'] = $this->array_get($options, 'from', $this->config['from']);
 
-        $type = $this->array_get($options, 'type', 'TextMessage');
-
-        if (! in_array($type, $this->allowedTypeMessages)) {
-            $type = 'TextMessage';
-        }
-
-        $params['body'] = $message;
-
-        if ($type == 'SoundMessage') {
-            $params['body'] = in_array($message, $this->allowedSounds) ? $message : 'horn';
-        }
-
-        $params['type'] = $type;
+        $params['text'] = $message;
 
         return $params;
     }
@@ -133,21 +82,20 @@ class Campfire extends AbstractGateway implements Notifier
         $token = $params['token'];
 
         unset($params['token']);
-        unset($params['from']);
 
         $rawResponse = $this->getHttpClient()->{$method}($url, [
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',
             'headers'         => [
-                'Authorization' => 'Basic '.base64_encode($token.':x'),
+                'Accept'        => 'application/json',
                 'Content-Type'  => 'application/json',
-                'User-Agent'    => 'notifyme/1.0 (https://github.com/dinkbit/notifyme)',
+                'Authorization' => 'Bearer '.$token,
             ],
-            'json' => ['message' => $params],
+            'json' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 201) {
+        if ($rawResponse->getStatusCode() == 200) {
             $response = [];
             $success = true;
         } elseif ($rawResponse->getStatusCode() == 404) {
@@ -155,7 +103,7 @@ class Campfire extends AbstractGateway implements Notifier
         } elseif ($rawResponse->getStatusCode() == 400) {
             $response['error'] = 'Incorrect request values.';
         } else {
-            $response['error'] = $this->responseError($rawResponse);
+            $response = $this->responseError($rawResponse);
         }
 
         return $this->mapResponse($success, $response);
@@ -220,6 +168,6 @@ class Campfire extends AbstractGateway implements Notifier
      */
     protected function getRequestUrl()
     {
-        return str_replace('{domain}', $this->config['from'], $this->endpoint);
+        return $this->endpoint.'/'.$this->version;
     }
 }

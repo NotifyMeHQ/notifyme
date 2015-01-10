@@ -8,7 +8,7 @@ Supported Gateways:
 * HipChat
 * Twilio
 * Campfire
-* Gitter (soon)
+* Gitter
 * PagerDuty (soon)
 * Webhook (soon)
 
@@ -52,7 +52,9 @@ First, you should configure the authentication providers you would like to use i
 			'from' 	=> 'notifyme', // Domain account
 			'token' => '',
 		],
-
+		'gitter' => [
+			'token' => '',
+		],
 	];
 
 ### Examples
@@ -106,6 +108,8 @@ $notifyme->driver('hipchat')->notify('You did it!', ['to' => 'everybody', 'notif
 $notifyme->driver('twilio')->notify('You did it!', ['to' => '+15005550001']);
 
 $notifyme->driver('campfire')->notify('You did it!', ['to' => '1234']);
+
+$notifyme->driver('gitter')->notify('You did it!', ['to' => ':roomId']);
 
 ```
 
