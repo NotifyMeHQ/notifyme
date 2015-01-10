@@ -2,12 +2,13 @@
 
 namespace Dinkbit\Notifyme;
 
-use Illuminate\Support\Manager;
-use InvalidArgumentException;
 use Dinkbit\Notifyme\Gateways\Campfire;
+use Dinkbit\Notifyme\Gateways\Gitter;
 use Dinkbit\Notifyme\Gateways\HipChat;
 use Dinkbit\Notifyme\Gateways\Slack;
 use Dinkbit\Notifyme\Gateways\Twilio;
+use Illuminate\Support\Manager;
+use InvalidArgumentException;
 
 class NotifymeManager extends Manager implements Contracts\Factory
 {
@@ -69,6 +70,18 @@ class NotifymeManager extends Manager implements Contracts\Factory
         $config = $this->app['config']['services.campfire'];
 
         return new Campfire($config);
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Dinkbit\Notifyme\Gateways\Gitter
+     */
+    protected function createGitterDriver()
+    {
+        $config = $this->app['config']['services.gitter'];
+
+        return new Gitter($config);
     }
 
     /**
