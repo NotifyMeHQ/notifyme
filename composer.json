@@ -30,9 +30,8 @@
         "phpspec/phpspec": "~2.0"
     },
     "autoload": {
-        "psr-0": {
-            "Dinkbit\\Notifyme": "src/"
+        "psr-4": {
+            "Dinkbit\\Notifyme\\": "src/Dinkbit/Notifyme/"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }
