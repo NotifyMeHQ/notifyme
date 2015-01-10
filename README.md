@@ -1,4 +1,6 @@
 # Notifyme
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dinkbit/notifyme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://img.shields.io/travis/dinkbit/notifyme.svg?style=flat-square)](https://travis-ci.org/dinkbit/notifyme)
 
 Common interface for notification services.
