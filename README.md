@@ -12,9 +12,9 @@ Supported Gateways:
 * PagerDuty (soon)
 * Webhook (soon)
 
-### Install
+## Installation
 
-## Laravel 4.2 and Below
+### Laravel 4.2 and Below
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `dinkbit/notifyme`.
 
