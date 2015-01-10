@@ -1,29 +1,29 @@
-<?php 
+<?php
 
 namespace Dinkbit\Notifyme\Gateways;
 
 use Dinkbit\Notifyme\Contracts\Notifier;
 use Dinkbit\Notifyme\Response;
 
-class HipChat extends AbstractGateway implements Notifier {
-
+class HipChat extends AbstractGateway implements Notifier
+{
     /**
      * Gateway API endpoint.
-     * 
+     *
      * @var string
      */
     protected $endpoint = 'https://api.hipchat.com';
 
     /**
      * Gateway display name.
-     * 
+     *
      * @var string
      */
     protected $displayName = 'hipchat';
 
     /**
      * HipChat message background color.
-     * 
+     *
      * @var string
      */
     protected $colors = [
@@ -64,10 +64,11 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Add a message to the request.
-     * 
+     *
      * @param  string   $message
      * @param  string[] $params
      * @param  string[] $options
+     * 
      * @return array
      */
     protected function addMessage($message, array $params, array $options)
@@ -106,13 +107,10 @@ class HipChat extends AbstractGateway implements Notifier {
             'json' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 204)
-        {
+        if ($rawResponse->getStatusCode() == 204) {
             $response = [];
             $success = true;
-        }
-        else
-        {
+        } else {
             $response = $this->responseError($rawResponse);
         }
 
@@ -132,9 +130,9 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Parse JSON response to array.
-     * 
+     *
      * @param  $body
-     * 
+     *
      * @return array
      */
     protected function parseResponse($body)
@@ -144,15 +142,14 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Get error response from server or fallback to general error.
-     * 
+     *
      * @param  string $rawResponse
-     * 
+     *
      * @return array
      */
     protected function responseError($rawResponse)
     {
-        if ( ! $this->isJson($rawResponse->getBody()))
-        {
+        if (! $this->isJson($rawResponse->getBody())) {
             return $this->jsonError($rawResponse);
         }
 
@@ -161,8 +158,9 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Default JSON response.
-     * 
+     *
      * @param  string $rawResponse
+     * 
      * @return array
      */
     public function jsonError($rawResponse)
@@ -179,9 +177,9 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Check if string is a valid JSON.
-     * 
+     *
      * @param  string $string
-     * 
+     *
      * @return bool
      */
     protected function isJson($string)
@@ -193,7 +191,7 @@ class HipChat extends AbstractGateway implements Notifier {
 
     /**
      * Get the request url.
-     * 
+     *
      * @return string
      */
     protected function getRequestUrl()

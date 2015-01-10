@@ -2,11 +2,11 @@
 
 namespace Dinkbit\Notifyme;
 
-class Response {
-
+class Response
+{
     /**
      * Response information.
-     * 
+     *
      * @var array
      */
     protected $response;
@@ -45,7 +45,7 @@ class Response {
      * Set the raw response array from the gateway.
      *
      * @param  array $response
-     * 
+     *
      * @return $this
      */
     public function setRaw(array $response)
@@ -58,7 +58,7 @@ class Response {
      * Map the given array onto the response's properties.
      *
      * @param  array $attributes
-     * 
+     *
      * @return $this
      */
     public function map(array $attributes)
@@ -69,5 +69,4 @@ class Response {
 
         return $this;
     }
-
 }

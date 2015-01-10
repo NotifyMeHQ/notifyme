@@ -1,22 +1,22 @@
-<?php 
+<?php
 
 namespace Dinkbit\Notifyme\Gateways;
 
 use Dinkbit\Notifyme\Contracts\Notifier;
 use Dinkbit\Notifyme\Response;
 
-class Slack extends AbstractGateway implements Notifier {
-
+class Slack extends AbstractGateway implements Notifier
+{
     /**
      * Gateway API endpoint.
-     * 
+     *
      * @var string
      */
     protected $endpoint = 'https://slack.com/api';
 
     /**
      * Gateway display name.
-     * 
+     *
      * @var string
      */
     protected $displayName = 'slack';
@@ -50,10 +50,11 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Add a message to the request.
-     * 
+     *
      * @param  string   $message
      * @param  string[] $params
      * @param  string[] $options
+     * 
      * @return array
      */
     protected function addMessage($message, array $params, array $options)
@@ -70,7 +71,7 @@ class Slack extends AbstractGateway implements Notifier {
      * Formats a string for Slack.
      *
      * @param  string $string
-     * 
+     *
      * @return string
      */
     public function formatMessage($string)
@@ -96,13 +97,10 @@ class Slack extends AbstractGateway implements Notifier {
             'body' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 200)
-        {
+        if ($rawResponse->getStatusCode() == 200) {
             $response = $this->parseResponse($rawResponse->getBody());
             $success = $response['ok'];
-        }
-        else
-        {
+        } else {
             $response = $this->responseError($rawResponse);
         }
 
@@ -122,9 +120,9 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Parse JSON response to array.
-     * 
+     *
      * @param  $body
-     * 
+     *
      * @return array
      */
     protected function parseResponse($body)
@@ -134,15 +132,14 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Get error response from server or fallback to general error.
-     * 
+     *
      * @param  string $rawResponse
-     * 
+     *
      * @return array
      */
     protected function responseError($rawResponse)
     {
-        if ( ! $this->isJson($rawResponse->getBody()))
-        {
+        if (! $this->isJson($rawResponse->getBody())) {
             return $this->jsonError($rawResponse);
         }
 
@@ -151,8 +148,9 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Default JSON response.
-     * 
+     *
      * @param  string $rawResponse
+     * 
      * @return array
      */
     public function jsonError($rawResponse)
@@ -167,9 +165,9 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Check if string is a valid JSON.
-     * 
+     *
      * @param  string $string
-     * 
+     *
      * @return bool
      */
     protected function isJson($string)
@@ -181,7 +179,7 @@ class Slack extends AbstractGateway implements Notifier {
 
     /**
      * Get the request url.
-     * 
+     *
      * @return string
      */
     protected function getRequestUrl()

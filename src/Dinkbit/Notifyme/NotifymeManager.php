@@ -7,7 +7,6 @@ use Illuminate\Support\Manager;
 
 class NotifymeManager extends Manager implements Contracts\Factory
 {
-
     /**
      * Get a driver instance.
      *
@@ -47,7 +46,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
      * Get the default driver name.
      *
      * @throws \InvalidArgumentException
-     * 
+     *
      * @return string
      */
     public function getDefaultDriver()

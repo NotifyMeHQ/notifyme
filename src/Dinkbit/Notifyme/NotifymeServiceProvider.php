@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class NotifymeServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -35,5 +34,4 @@ class NotifymeServiceProvider extends ServiceProvider
     {
         return ['Dinkbit\Notifyme\Contracts\Factory'];
     }
-
 }
