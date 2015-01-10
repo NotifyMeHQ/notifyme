@@ -7,7 +7,7 @@ Supported Gateways:
 * Slack
 * HipChat
 * Twilio
-* Campfire (soon)
+* Campfire
 * Gitter (soon)
 * PagerDuty (soon)
 * Webhook (soon)
@@ -47,7 +47,12 @@ First, you should configure the authentication providers you would like to use i
 			'from'	 => '', // Phone
 			'client' => '', // Sid
 			'token'  => '', 
-		]
+		],
+		'campfire' => [
+			'from' 	=> 'notifyme', // Domain account
+			'token' => '',
+		],
+
 	];
 
 ### Examples

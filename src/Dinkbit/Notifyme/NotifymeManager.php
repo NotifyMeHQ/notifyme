@@ -56,6 +56,18 @@ class NotifymeManager extends Manager implements Contracts\Factory
     }
 
     /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Dinkbit\Notifyme\Gateways\Campfire
+     */
+    protected function createCampfireDriver()
+    {
+        $config = $this->app['config']['services.campfire'];
+
+        return new \Dinkbit\Notifyme\Gateways\Campfire($config);
+    }
+
+    /**
      * Get the default driver name.
      *
      * @throws \InvalidArgumentException
