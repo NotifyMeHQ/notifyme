@@ -21,23 +21,31 @@ First, you should configure the authentication providers you would like to use i
 
 ```php
 
-	// Inject the interface
+// Inject the interface
 
-	use Dinkbit\Notifyme\Contracts\Factory as Notifyme;
+use Dinkbit\Notifyme\Contracts\Factory as Notifyme;
 
-	public function __construct(Notifyme $notifyme)
-	{
-	    $this->notifyme = $notifyme;
-	}
+public function __construct(Notifyme $notifyme)
+{
+    $this->notifyme = $notifyme;
+}
+
+public function storePost()
+{
+    $post = Post::create(Input::all());
+
+    $notifyme->driver('slack')->notify($post->title, ['channel' => '#everybody']);
+}
 
 ```
-Use
+
+You can override the service configuration and set specific service options on the secondarray.
 
 ```php
 
-	$notifyme->driver('slack')->notify('You did it!', ['channel' => '#everybody']);
+$notifyme->driver('slack')->notify('You did it!', ['channel' => '#everybody']);
 
-	$notifyme->driver('hipchat')->notify('You did it!', ['channel' => 'everybody', 'notify' => true]);
+$notifyme->driver('hipchat')->notify('You did it!', ['channel' => 'everybody', 'notify' => true]);
 
 ```
 
