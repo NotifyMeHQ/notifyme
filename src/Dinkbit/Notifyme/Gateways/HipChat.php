@@ -7,9 +7,25 @@ use Dinkbit\Notifyme\Response;
 
 class HipChat extends AbstractGateway implements Notifier {
 
+    /**
+     * Gateway API endpoint.
+     * 
+     * @var string
+     */
     protected $endpoint = 'https://api.hipchat.com';
+
+    /**
+     * Gateway display name.
+     * 
+     * @var string
+     */
     protected $displayName = 'hipchat';
 
+    /**
+     * HipChat message background color.
+     * 
+     * @var string
+     */
     protected $colors = [
         'yellow',
         'red',
@@ -115,7 +131,10 @@ class HipChat extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $body
+     * Parse JSON response to array.
+     * 
+     * @param  $body
+     * 
      * @return array
      */
     protected function parseResponse($body)
@@ -124,7 +143,10 @@ class HipChat extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $rawResponse
+     * Get error response from server or fallback to general error.
+     * 
+     * @param  string $rawResponse
+     * 
      * @return array
      */
     protected function responseError($rawResponse)
@@ -138,7 +160,9 @@ class HipChat extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $rawResponse
+     * Default JSON response.
+     * 
+     * @param  string $rawResponse
      * @return array
      */
     public function jsonError($rawResponse)
@@ -154,7 +178,10 @@ class HipChat extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $string
+     * Check if string is a valid JSON.
+     * 
+     * @param  string $string
+     * 
      * @return bool
      */
     protected function isJson($string)
@@ -165,6 +192,8 @@ class HipChat extends AbstractGateway implements Notifier {
     }
 
     /**
+     * Get the request url.
+     * 
      * @return string
      */
     protected function getRequestUrl()

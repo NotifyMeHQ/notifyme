@@ -7,7 +7,18 @@ use Dinkbit\Notifyme\Response;
 
 class Slack extends AbstractGateway implements Notifier {
 
+    /**
+     * Gateway API endpoint.
+     * 
+     * @var string
+     */
     protected $endpoint = 'https://slack.com/api';
+
+    /**
+     * Gateway display name.
+     * 
+     * @var string
+     */
     protected $displayName = 'slack';
 
     /**
@@ -110,7 +121,10 @@ class Slack extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $body
+     * Parse JSON response to array.
+     * 
+     * @param  $body
+     * 
      * @return array
      */
     protected function parseResponse($body)
@@ -119,7 +133,10 @@ class Slack extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $rawResponse
+     * Get error response from server or fallback to general error.
+     * 
+     * @param  string $rawResponse
+     * 
      * @return array
      */
     protected function responseError($rawResponse)
@@ -133,7 +150,9 @@ class Slack extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $rawResponse
+     * Default JSON response.
+     * 
+     * @param  string $rawResponse
      * @return array
      */
     public function jsonError($rawResponse)
@@ -147,7 +166,10 @@ class Slack extends AbstractGateway implements Notifier {
     }
 
     /**
-     * @param $string
+     * Check if string is a valid JSON.
+     * 
+     * @param  string $string
+     * 
      * @return bool
      */
     protected function isJson($string)
@@ -158,6 +180,8 @@ class Slack extends AbstractGateway implements Notifier {
     }
 
     /**
+     * Get the request url.
+     * 
      * @return string
      */
     protected function getRequestUrl()
