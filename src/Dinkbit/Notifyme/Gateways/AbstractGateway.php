@@ -101,16 +101,15 @@ abstract class AbstractGateway implements GatewayContract
      * @param string[] $options
      * @param string[] $required
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function requires($options, array $required = [])
     {
         foreach ($required as $key) {
-            if (! array_key_exists(trim($key), $options)) {
+            if (!array_key_exists(trim($key), $options)) {
                 throw new \InvalidArgumentException("Missing required parameter: {$key}");
-                break;
-
-                return false;
             }
         }
 
