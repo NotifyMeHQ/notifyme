@@ -87,17 +87,17 @@ public function storePost()
 
 You can override the service configuration and set specific service options on the second array.
 
-```php
+**Interface example**
 
-// Interface example
+```php
 
 $notifyme->driver($diver)->notify($message, $params);
 
 ```
 
-```php
+**Gateway example**
 
-// Gateways example
+```php
 
 $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
