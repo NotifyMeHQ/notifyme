@@ -10,7 +10,7 @@ Supported Gateways:
 * Campfire
 * Gitter
 * PagerDuty
-* Webhook (soon)
+* Webhook
 
 ## Installation
 
@@ -115,6 +115,8 @@ $notifyme->driver('campfire')->notify('You did it!', ['to' => '1234']);
 $notifyme->driver('gitter')->notify('You did it!', ['to' => ':roomId']);
 
 $notifyme->driver('pagerduty')->notify('This is working awesome!', ['to' => ':incident_key']);
+
+$notifyme->driver('webhook')->notify(['message' => 'This is working awesome!'], ['to' => 'http://example.com']);
 
 ```
 

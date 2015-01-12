@@ -8,6 +8,7 @@ use Dinkbit\Notifyme\Gateways\HipChat;
 use Dinkbit\Notifyme\Gateways\PagerDuty;
 use Dinkbit\Notifyme\Gateways\Slack;
 use Dinkbit\Notifyme\Gateways\Twilio;
+use Dinkbit\Notifyme\Gateways\Webhook;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
@@ -95,6 +96,18 @@ class NotifymeManager extends Manager implements Contracts\Factory
         $config = $this->app['config']['services.pagerduty'];
 
         return new PagerDuty($config);
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Dinkbit\Notifyme\Gateways\Webhook
+     */
+    protected function createWebhookDriver()
+    {
+        $config = $this->app['config']['services.webhook'];
+
+        return new Webhook($config);
     }
 
     /**
