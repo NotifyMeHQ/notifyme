@@ -11,6 +11,12 @@ Supported Gateways:
 * Gitter
 * PagerDuty
 * Webhook
+* Intercom (soon)
+* Amazon SES (soon)
+* Amazon SNS (soon)
+* Twitter (soon)
+* Mail (soon)
+* Yo (soon)
 
 ## Installation
 
