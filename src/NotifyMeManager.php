@@ -2,6 +2,9 @@
 
 namespace NotifyMeHQ\NotifyMe;
 
+use Illuminate\Support\Manager;
+use InvalidArgumentException;
+use NotifyMeHQ\NotifyMe\Contracts\Factory;
 use NotifyMeHQ\NotifyMe\Gateways\Campfire;
 use NotifyMeHQ\NotifyMe\Gateways\Gitter;
 use NotifyMeHQ\NotifyMe\Gateways\HipChat;
@@ -9,10 +12,8 @@ use NotifyMeHQ\NotifyMe\Gateways\PagerDuty;
 use NotifyMeHQ\NotifyMe\Gateways\Slack;
 use NotifyMeHQ\NotifyMe\Gateways\Twilio;
 use NotifyMeHQ\NotifyMe\Gateways\Webhook;
-use Illuminate\Support\Manager;
-use InvalidArgumentException;
 
-class NotifyMeManager extends Manager implements Contracts\Factory
+class NotifyMeManager extends Manager implements Factory
 {
     /**
      * Get a driver instance.
