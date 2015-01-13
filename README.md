@@ -42,17 +42,17 @@ First, you should configure the authentication providers you would like to use i
 
 	return [
 		'slack' => [
-			'from' 	=> 'notifyme', 
+			'from' 	=> 'notifyme',
 			'token' => '',
 		],
 		'hipchat' => [
-			'from' 	=> 'notifyme', 
+			'from' 	=> 'notifyme',
 			'token' => '',
 		],
 		'twilio' => [
 			'from'	 => '', // Phone
 			'client' => '', // Sid
-			'token'  => '', 
+			'token'  => '',
 		],
 		'campfire' => [
 			'from' 	=> 'notifyme', // Domain account
@@ -130,3 +130,7 @@ $notifyme->driver('webhook')->notify(['message' => 'This is working awesome!'], 
 
 - [ ] Add tests
 - [ ] Add docs
+
+## License
+
+NotifyMe is licensed under [The MIT License (MIT)](LICENSE).

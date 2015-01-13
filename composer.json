@@ -21,10 +21,6 @@
         {
             "name": "Joseph Cohen",
             "email": "joseph.cohen@dinkbit.com"
-        },
-        {
-            "name": "NotifyMeHQ",
-            "homepage": "https://github.com/dinkbit/notifyme"
         }
     ],
     "require": {
