@@ -10,4 +10,4 @@ sudo: false
 
 before_script: travis_retry composer install --no-interaction --prefer-source
 
-script: phpunit
+script: vendor/bin/phpunit
