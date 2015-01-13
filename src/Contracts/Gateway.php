@@ -4,4 +4,5 @@ namespace NotifyMeHQ\NotifyMe\Contracts;
 
 interface Gateway
 {
+    //
 }

@@ -5,7 +5,21 @@ namespace NotifyMeHQ\NotifyMe;
 class Response
 {
     /**
-     * Response information.
+     * Has the message sent by the Gateway?
+     *
+     * @var bool
+     */
+    protected $success;
+
+    /**
+     * The response message from the payment gateway.
+     *
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * The raw response information.
      *
      * @var array
      */
@@ -24,11 +38,11 @@ class Response
     /**
      * The response message from the payment gateway.
      *
-     * @return string.
+     * @return string
      */
     public function message()
     {
-        return $this->message;
+        return (string) $this->message;
     }
 
     /**
@@ -46,7 +60,7 @@ class Response
      *
      * @param array $response
      *
-     * @return $this
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
     public function setRaw(array $response)
     {
@@ -54,12 +68,13 @@ class Response
 
         return $this;
     }
+
     /**
      * Map the given array onto the response's properties.
      *
      * @param array $attributes
      *
-     * @return $this
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
     public function map(array $attributes)
     {
