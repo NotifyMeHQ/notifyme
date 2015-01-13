@@ -1,6 +1,6 @@
 <?php
 
-namespace Dinkbit\Notifyme\Contracts;
+namespace NotifyMeHQ\NotifyMe\Contracts;
 
 interface Factory
 {
@@ -9,7 +9,7 @@ interface Factory
      *
      * @param string $driver
      *
-     * @return \Dinkbit\Notifyme\Contracts\Gateway
+     * @return \NotifyMeHQ\NotifyMe\Contracts\Gateway
      */
     public function driver($driver = null);
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Dinkbit\Notifyme;
+namespace NotifyMeHQ\NotifyMe;
 
 use Illuminate\Support\ServiceProvider;
 
-class NotifymeServiceProvider extends ServiceProvider
+class NotifyMeServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -20,8 +20,8 @@ class NotifymeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bindShared('Dinkbit\Notifyme\Contracts\Factory', function ($app) {
-            return new NotifymeManager($app);
+        $this->app->bindShared('NotifyMeHQ\NotifyMe\Contracts\Factory', function ($app) {
+            return new NotifyMeManager($app);
         });
     }
 
@@ -32,6 +32,6 @@ class NotifymeServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['Dinkbit\Notifyme\Contracts\Factory'];
+        return ['NotifyMeHQ\NotifyMe\Contracts\Factory'];
     }
 }

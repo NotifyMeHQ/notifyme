@@ -1,4 +1,4 @@
-# Notifyme
+# NotifyMe
 [![Build Status](https://img.shields.io/travis/dinkbit/notifyme.svg?style=flat-square)](https://travis-ci.org/dinkbit/notifyme)
 
 Common interface for notification services.
@@ -34,7 +34,7 @@ Next, update Composer from the Terminal:
 
 Once this operation completes, the final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
 
-    'Dinkbit\Notifyme\NotifymeServiceProvider'
+    'NotifyMeHQ\NotifyMe\NotifyMeServiceProvider'
 
 ### Add Configuration
 
@@ -72,11 +72,11 @@ First, you should configure the authentication providers you would like to use i
 
 // Inject the interface
 
-use Dinkbit\Notifyme\Contracts\Factory as Notifyme;
+use NotifyMeHQ\NotifyMe\Contracts\Factory as NotifyMe;
 
 protected $notifyme;
 
-public function __construct(Notifyme $notifyme)
+public function __construct(NotifyMe $notifyme)
 {
     $this->notifyme = $notifyme;
 }
