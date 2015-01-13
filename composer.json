@@ -32,9 +32,17 @@
         "illuminate/support": "~4.1|~5.0",
         "guzzlehttp/guzzle": "~5.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
     "autoload": {
         "psr-4": {
             "NotifyMeHQ\\NotifyMe\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NotifyMeHQ\\NotifyMe\\Tests\\": "tests/"
         }
     }
 }
