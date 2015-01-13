@@ -1,6 +1,6 @@
 <?php
 
-namespace Dinkbit\Notifyme\Contracts;
+namespace NotifyMeHQ\NotifyMe\Contracts;
 
 interface Notifier
 {
@@ -10,7 +10,7 @@ interface Notifier
      * @param string   $message
      * @param string[] $options
      *
-     * @return \Dinkbit\Notifyme\Response
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
     public function notify($message, $options = []);
 }

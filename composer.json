@@ -1,13 +1,19 @@
 {
-    "name": "dinkbit/notifyme",
+    "name": "notifymehq/notifyme",
     "description": "Provides a common interface for notification services",
     "license": "MIT",
     "keywords": [
+        "notifymehq",
         "notifyme",
         "notifications",
         "integrations",
         "slack",
         "hipchat",
+        "campfire",
+        "webhook",
+        "gitter",
+        "twilio",
+        "pagerduty",
         "laravel",
         "dinkbit"
     ],
@@ -17,7 +23,7 @@
             "email": "joseph.cohen@dinkbit.com"
         },
         {
-            "name": "Dinkbit",
+            "name": "NotifyMeHQ",
             "homepage": "https://github.com/dinkbit/notifyme"
         }
     ],
@@ -31,7 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Dinkbit\\Notifyme\\": "src/Dinkbit/Notifyme/"
+            "NotifyMeHQ\\NotifyMe\\": "src/NotifyMeHQ/NotifyMe/"
         }
     }
 }

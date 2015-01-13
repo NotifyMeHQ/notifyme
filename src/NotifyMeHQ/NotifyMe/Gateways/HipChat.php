@@ -1,32 +1,46 @@
 <?php
 
-namespace Dinkbit\Notifyme\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gateways;
 
-use Dinkbit\Notifyme\Contracts\Notifier;
-use Dinkbit\Notifyme\Response;
+use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Response;
 
-class PagerDuty extends AbstractGateway implements Notifier
+class HipChat extends AbstractGateway implements Notifier
 {
     /**
      * Gateway API endpoint.
      *
      * @var string
      */
-    protected $endpoint = 'https://events.pagerduty.com/generic/{version}';
+    protected $endpoint = 'https://api.hipchat.com';
 
     /**
      * Gateway display name.
      *
      * @var string
      */
-    protected $displayName = 'pagerduty';
+    protected $displayName = 'hipchat';
 
     /**
-     * Gitter API version.
+     * HipChat API version.
      *
      * @var string
      */
-    protected $version = '2010-04-15';
+    protected $version = 'v2';
+
+    /**
+     * HipChat message background color.
+     *
+     * @var string
+     */
+    protected $colors = [
+        'yellow',
+        'red',
+        'gray',
+        'green',
+        'purple',
+        'random',
+    ];
 
     /**
      * {@inheritdoc}
@@ -47,9 +61,11 @@ class PagerDuty extends AbstractGateway implements Notifier
     {
         $params = [];
 
+        $room = $this->array_get($options, 'to', '');
+
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString("create_event.json"), $params);
+        return $this->commit('post', $this->buildUrlFromString("room/{$room}/message"), $params);
     }
 
     /**
@@ -63,13 +79,21 @@ class PagerDuty extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['service_key'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['incident_key'] = $this->array_get($options, 'to', 'Notifyme');
-        $params['event_type'] = $this->array_get($options, 'event_type', 'trigger');
-        $params['client'] = $this->array_get($options, 'client', null);
-        $params['client_url'] = $this->array_get($options, 'client_url', null);
-        $params['details'] = $this->array_get($options, 'details', null);
-        $params['description'] = $message;
+        $params['auth_token'] = $this->array_get($options, 'token', $this->config['token']);
+
+        $params['id'] = $this->array_get($options, 'to', '');
+        $params['from'] = $this->array_get($options, 'from', $this->config['from']);
+
+        $color = $this->array_get($options, 'color', 'yellow');
+
+        if (! in_array($color, $this->colors)) {
+            $color = 'yellow';
+        }
+
+        $params['color'] = $color;
+        $params['message'] = $message;
+        $params['notify'] = $this->array_get($options, 'notify', false);
+        $params['message_format'] = $this->array_get($options, 'format', 'text');
 
         return $params;
     }
@@ -81,23 +105,24 @@ class PagerDuty extends AbstractGateway implements Notifier
     {
         $success = false;
 
+        $token = $params['auth_token'];
+
+        unset($params['auth_token']);
+
         $rawResponse = $this->getHttpClient()->{$method}($url, [
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',
             'headers'         => [
                 'Content-Type'  => 'application/json',
+                'Authorization' => 'Bearer '.$token,
             ],
             'json' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 200) {
+        if ($rawResponse->getStatusCode() == 204) {
             $response = [];
             $success = true;
-        } elseif ($rawResponse->getStatusCode() == 404) {
-            $response['error'] = 'Inválid service.';
-        } elseif ($rawResponse->getStatusCode() == 400) {
-            $response['error'] = 'Incorrect request values.';
         } else {
             $response = $this->responseError($rawResponse);
         }
@@ -166,6 +191,6 @@ class PagerDuty extends AbstractGateway implements Notifier
      */
     protected function getRequestUrl()
     {
-        return str_replace('{version}', $this->version, $this->endpoint);
+        return $this->endpoint.'/'.$this->version;
     }
 }

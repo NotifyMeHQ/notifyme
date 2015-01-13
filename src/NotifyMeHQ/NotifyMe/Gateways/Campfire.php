@@ -1,9 +1,9 @@
 <?php
 
-namespace Dinkbit\Notifyme\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gateways;
 
-use Dinkbit\Notifyme\Contracts\Notifier;
-use Dinkbit\Notifyme\Response;
+use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Response;
 
 class Campfire extends AbstractGateway implements Notifier
 {

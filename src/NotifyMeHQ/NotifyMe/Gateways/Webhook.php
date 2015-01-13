@@ -1,42 +1,24 @@
 <?php
 
-namespace Dinkbit\Notifyme\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gateways;
 
-use Dinkbit\Notifyme\Contracts\Notifier;
-use Dinkbit\Notifyme\Response;
+use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Response;
 
-class Gitter extends AbstractGateway implements Notifier
+class Webhook extends AbstractGateway implements Notifier
 {
-    /**
-     * Gateway API endpoint.
-     *
-     * @var string
-     */
-    protected $endpoint = 'https://api.gitter.im';
-
     /**
      * Gateway display name.
      *
      * @var string
      */
-    protected $displayName = 'gitter';
-
-    /**
-     * Gitter API version.
-     *
-     * @var string
-     */
-    protected $version = 'v1';
+    protected $displayName = 'webhook';
 
     /**
      * {@inheritdoc}
      */
     public function __construct($config)
     {
-        $this->requires($config, ['token']);
-
-        $config['from'] = $this->array_get($config, 'from', '');
-
         $this->config = $config;
     }
 
@@ -45,31 +27,9 @@ class Gitter extends AbstractGateway implements Notifier
      */
     public function notify($message, $options = [])
     {
-        $params = [];
+        $to = $this->array_get($options, 'to', '');
 
-        $room = $this->array_get($options, 'to', '');
-
-        $params = $this->addMessage($message, $params, $options);
-
-        return $this->commit('post', $this->buildUrlFromString("rooms/{$room}/chatMessages"), $params);
-    }
-
-    /**
-     * Add a message to the request.
-     *
-     * @param string   $message
-     * @param string[] $params
-     * @param string[] $options
-     *
-     * @return array
-     */
-    protected function addMessage($message, array $params, array $options)
-    {
-        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-
-        $params['text'] = $message;
-
-        return $params;
+        return $this->commit('post', $to, $message);
     }
 
     /**
@@ -79,31 +39,23 @@ class Gitter extends AbstractGateway implements Notifier
     {
         $success = false;
 
-        $token = $params['token'];
-
-        unset($params['token']);
-
         $rawResponse = $this->getHttpClient()->{$method}($url, [
-            'exceptions'      => false,
-            'timeout'         => '80',
-            'connect_timeout' => '30',
-            'headers'         => [
-                'Accept'        => 'application/json',
+            'exceptions'        => false,
+            'timeout'           => '80',
+            'connect_timeout'   => '30',
+            'headers'           => [
                 'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer '.$token,
+                'User-Agent'    => 'notifyme-webhook/1.0',
             ],
-            'json' => $params,
+            'json'              => $params,
         ]);
 
+        $response = [];
+
         if ($rawResponse->getStatusCode() == 200) {
-            $response = [];
             $success = true;
-        } elseif ($rawResponse->getStatusCode() == 404) {
-            $response['error'] = 'Inválid room.';
-        } elseif ($rawResponse->getStatusCode() == 400) {
-            $response['error'] = 'Incorrect request values.';
         } else {
-            $response = $this->responseError($rawResponse);
+            $response['error'] = $rawResponse->getStatusCode().' Webhook failed delivery';
         }
 
         return $this->mapResponse($success, $response);
@@ -168,6 +120,6 @@ class Gitter extends AbstractGateway implements Notifier
      */
     protected function getRequestUrl()
     {
-        return $this->endpoint.'/'.$this->version;
+        return $this->endpoint;
     }
 }

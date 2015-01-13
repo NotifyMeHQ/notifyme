@@ -1,8 +1,8 @@
 <?php
 
-namespace Dinkbit\Notifyme\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gateways;
 
-use Dinkbit\Notifyme\Contracts\Gateway as GatewayContract;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway as GatewayContract;
 
 abstract class AbstractGateway implements GatewayContract
 {
@@ -38,7 +38,7 @@ abstract class AbstractGateway implements GatewayContract
      * @param bool  $success
      * @param array $response
      *
-     * @return \Dinkbit\Notifyme\Response
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
     abstract public function mapResponse($success, $response);
 

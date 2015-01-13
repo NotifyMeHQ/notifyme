@@ -1,39 +1,34 @@
 <?php
 
-namespace Dinkbit\Notifyme\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gateways;
 
-use Dinkbit\Notifyme\Contracts\Notifier;
-use Dinkbit\Notifyme\Response;
+use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Response;
 
-class Twilio extends AbstractGateway implements Notifier
+class Slack extends AbstractGateway implements Notifier
 {
     /**
      * Gateway API endpoint.
      *
      * @var string
      */
-    protected $endpoint = 'https://api.twilio.com';
+    protected $endpoint = 'https://slack.com/api';
 
     /**
      * Gateway display name.
      *
      * @var string
      */
-    protected $displayName = 'twilio';
-
-    /**
-     * Twillio API version.
-     *
-     * @var string
-     */
-    protected $version = '2010-04-01';
+    protected $displayName = 'slack';
 
     /**
      * {@inheritdoc}
      */
     public function __construct($config)
     {
-        $this->requires($config, ['from', 'client', 'token']);
+        $this->requires($config, ['token']);
+
+        $config['username'] = $this->array_get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -45,15 +40,11 @@ class Twilio extends AbstractGateway implements Notifier
     {
         $params = [];
 
-        $this->config['client'] = $this->array_get($options, 'client', $this->config['client']);
-        $this->config['token'] = $this->array_get($options, 'token', $this->config['token']);
-
-        unset($options['client']);
-        unset($options['token']);
+        $params['unfurl_links'] = true;
 
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString('Accounts/'.$this->config['client'].'/SMS/Messages.json'), $params);
+        return $this->commit('post', $this->buildUrlFromString('chat.postMessage'), $params);
     }
 
     /**
@@ -67,11 +58,28 @@ class Twilio extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['From'] = $this->array_get($options, 'from', $this->config['from']);
-        $params['To'] = $this->array_get($options, 'to', '');
-        $params['Body'] = $message;
+        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
+        $params['username'] = $this->array_get($options, 'from', $this->config['from']);
+        $params['channel'] = $this->array_get($options, 'to', '');
+        $params['text'] = $this->formatMessage($message);
 
         return $params;
+    }
+
+    /**
+     * Formats a string for Slack.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function formatMessage($string)
+    {
+        $string = str_replace('&', '&amp;', $string);
+        $string = str_replace('<', '&lt;', $string);
+        $string = str_replace('>', '&gt;', $string);
+
+        return $string;
     }
 
     /**
@@ -85,22 +93,12 @@ class Twilio extends AbstractGateway implements Notifier
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',
-            'verify'          => true,
-            'auth'            => [
-                $this->config['client'],
-                $this->config['token'],
-            ],
-            'headers' => [
-                'Accept-Charset' => 'utf-8',
-                'Content-Type'   => 'application/x-www-form-urlencoded',
-                'User-Agent'     => 'notifyme/3.12.8 (php '.phpversion().')',
-            ],
-            'body' => $params,
+            'body'            => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 201) {
+        if ($rawResponse->getStatusCode() == 200) {
             $response = $this->parseResponse($rawResponse->getBody());
-            $success = true;
+            $success = $response['ok'];
         } else {
             $response = $this->responseError($rawResponse);
         }
@@ -115,7 +113,7 @@ class Twilio extends AbstractGateway implements Notifier
     {
         return (new Response())->setRaw($response)->map([
             'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['message'],
+            'message'       => $success ? 'Message sent' : $response['error'],
         ]);
     }
 
@@ -156,7 +154,7 @@ class Twilio extends AbstractGateway implements Notifier
         $msg .= " (Raw response API {$rawResponse->getBody()})";
 
         return [
-            'message' => $msg,
+            'error' => $msg,
         ];
     }
 
@@ -167,6 +165,6 @@ class Twilio extends AbstractGateway implements Notifier
      */
     protected function getRequestUrl()
     {
-        return $this->endpoint.'/'.$this->version;
+        return $this->endpoint;
     }
 }

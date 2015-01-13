@@ -1,18 +1,18 @@
 <?php
 
-namespace Dinkbit\Notifyme;
+namespace NotifyMeHQ\NotifyMe;
 
-use Dinkbit\Notifyme\Gateways\Campfire;
-use Dinkbit\Notifyme\Gateways\Gitter;
-use Dinkbit\Notifyme\Gateways\HipChat;
-use Dinkbit\Notifyme\Gateways\PagerDuty;
-use Dinkbit\Notifyme\Gateways\Slack;
-use Dinkbit\Notifyme\Gateways\Twilio;
-use Dinkbit\Notifyme\Gateways\Webhook;
+use NotifyMeHQ\NotifyMe\Gateways\Campfire;
+use NotifyMeHQ\NotifyMe\Gateways\Gitter;
+use NotifyMeHQ\NotifyMe\Gateways\HipChat;
+use NotifyMeHQ\NotifyMe\Gateways\PagerDuty;
+use NotifyMeHQ\NotifyMe\Gateways\Slack;
+use NotifyMeHQ\NotifyMe\Gateways\Twilio;
+use NotifyMeHQ\NotifyMe\Gateways\Webhook;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
-class NotifymeManager extends Manager implements Contracts\Factory
+class NotifyMeManager extends Manager implements Contracts\Factory
 {
     /**
      * Get a driver instance.
@@ -29,7 +29,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Slack
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Slack
      */
     protected function createSlackDriver()
     {
@@ -41,7 +41,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\HipChat
+     * @return \NotifyMeHQ\NotifyMe\Gateways\HipChat
      */
     protected function createHipchatDriver()
     {
@@ -53,7 +53,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Twilio
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Twilio
      */
     protected function createTwilioDriver()
     {
@@ -65,7 +65,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Campfire
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Campfire
      */
     protected function createCampfireDriver()
     {
@@ -77,7 +77,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Gitter
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Gitter
      */
     protected function createGitterDriver()
     {
@@ -89,7 +89,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\PagerDuty
+     * @return \NotifyMeHQ\NotifyMe\Gateways\PagerDuty
      */
     protected function createPagerdutyDriver()
     {
@@ -101,7 +101,7 @@ class NotifymeManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Dinkbit\Notifyme\Gateways\Webhook
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Webhook
      */
     protected function createWebhookDriver()
     {
@@ -119,6 +119,6 @@ class NotifymeManager extends Manager implements Contracts\Factory
      */
     public function getDefaultDriver()
     {
-        throw new InvalidArgumentException("No Notifyme driver was specified.");
+        throw new InvalidArgumentException("No NotifyMe driver was specified.");
     }
 }
