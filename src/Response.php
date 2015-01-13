@@ -12,7 +12,7 @@ class Response
     protected $success;
 
     /**
-     * The response message from the payment gateway.
+     * The response message from the notification gateway.
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Response
     }
 
     /**
-     * The response message from the payment gateway.
+     * The response message from the notification gateway.
      *
      * @return string
      */
