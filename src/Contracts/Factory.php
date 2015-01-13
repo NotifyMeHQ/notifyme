@@ -7,7 +7,7 @@ interface Factory
     /**
      * Get a Gateway implementation.
      *
-     * @param string $driver
+     * @param string|null $driver
      *
      * @return \NotifyMeHQ\NotifyMe\Contracts\Gateway
      */
