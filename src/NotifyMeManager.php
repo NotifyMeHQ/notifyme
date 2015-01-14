@@ -9,6 +9,7 @@ use NotifyMeHQ\NotifyMe\Gateways\Campfire;
 use NotifyMeHQ\NotifyMe\Gateways\Gitter;
 use NotifyMeHQ\NotifyMe\Gateways\HipChat;
 use NotifyMeHQ\NotifyMe\Gateways\PagerDuty;
+use NotifyMeHQ\NotifyMe\Gateways\Pushover;
 use NotifyMeHQ\NotifyMe\Gateways\Slack;
 use NotifyMeHQ\NotifyMe\Gateways\Twilio;
 use NotifyMeHQ\NotifyMe\Gateways\Webhook;
@@ -97,6 +98,18 @@ class NotifyMeManager extends Manager implements Factory
         $config = $this->app['config']['services.pagerduty'];
 
         return new PagerDuty($config);
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \NotifyMeHQ\NotifyMe\Gateways\Pushover
+     */
+    protected function createPagerdutyDriver()
+    {
+        $config = $this->app['config']['services.pushover'];
+
+        return new Pushover($config);
     }
 
     /**
