@@ -24,7 +24,7 @@ class Campfire extends AbstractGateway implements Notifier
     /**
      * Campfire allowed message types.
      *
-     * @var string
+     * @var string[]
      */
     protected $allowedTypeMessages = [
         'TextMessage',
@@ -36,7 +36,7 @@ class Campfire extends AbstractGateway implements Notifier
     /**
      * Campfire allowed sound types.
      *
-     * @var string
+     * @var string[]
      */
     protected $allowedSounds = [
         // hard to keep this list up-to-date

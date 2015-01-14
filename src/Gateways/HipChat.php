@@ -31,7 +31,7 @@ class HipChat extends AbstractGateway implements Notifier
     /**
      * HipChat message background color.
      *
-     * @var string
+     * @var string[]
      */
     protected $colors = [
         'yellow',
