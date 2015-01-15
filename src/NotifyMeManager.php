@@ -105,7 +105,7 @@ class NotifyMeManager extends Manager implements Factory
      *
      * @return \NotifyMeHQ\NotifyMe\Gateways\Pushover
      */
-    protected function createPagerdutyDriver()
+    protected function createPushoverDriver()
     {
         $config = $this->app['config']['services.pushover'];
 

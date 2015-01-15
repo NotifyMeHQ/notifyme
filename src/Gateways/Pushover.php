@@ -12,7 +12,7 @@ class Pushover extends AbstractGateway implements Notifier
      *
      * @var string
      */
-    protected $endpoint = 'https://api.pushover.net/1/messages.json';
+    protected $endpoint = 'https://api.pushover.net';
 
     /**
      * Gateway display name.
@@ -20,6 +20,13 @@ class Pushover extends AbstractGateway implements Notifier
      * @var string
      */
     protected $displayName = 'pushover';
+
+    /**
+     * Pushover API version.
+     *
+     * @var string
+     */
+    protected $version = '1';
 
     /**
      * Pushover allowed sounds.
@@ -56,7 +63,7 @@ class Pushover extends AbstractGateway implements Notifier
      */
     public function __construct($config)
     {
-        $this->requires($config, ['token', 'user', 'message']);
+        $this->requires($config, ['token']);
 
         $this->config = $config;
     }
@@ -68,11 +75,9 @@ class Pushover extends AbstractGateway implements Notifier
     {
         $params = [];
 
-        $to = $this->array_get($options, 'device', '');
-
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $to, $params);
+        return $this->commit('post', $this->buildUrlFromString('messages.json'), $params);
     }
 
     /**
@@ -87,11 +92,13 @@ class Pushover extends AbstractGateway implements Notifier
     protected function addMessage($message, array $params, array $options)
     {
         $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['user'] = $this->array_get($options, 'user', $this->config['user']);
+        $params['user'] = $this->array_get($options, 'to', '');
+        $params['device'] = $this->array_get($options, 'device', '');
+        $params['title'] = $this->array_get($options, 'title', '');
         $params['message'] = $message;
 
         if (isset($params['sound'])) {
-            $params['sound'] = in_array($params['sound'], $this->allowedSounds) ?
+            $params['sound'] = in_array($params['sound'], $this->allowedSounds) ? $params['sound'] : 'pushover';
         }
 
         return $params;
@@ -108,17 +115,20 @@ class Pushover extends AbstractGateway implements Notifier
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',
+            'headers'         => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
             'body'            => $params,
         ]);
 
         if ($rawResponse->getStatusCode() == 200) {
-           $response = $this->parseResponse($rawResponse->getBody());
-           $success = $response['ok'];
-       } else {
-           $response = $this->responseError($rawResponse);
-       }
+            $response = $this->parseResponse($rawResponse->getBody());
+            $success = (bool) $response['status'];
+        } else {
+            $response = $this->responseError($rawResponse);
+        }
 
-       return $this->mapResponse($success, $response);
+        return $this->mapResponse($success, $response);
     }
 
     /**
@@ -128,7 +138,7 @@ class Pushover extends AbstractGateway implements Notifier
     {
         return (new Response())->setRaw($response)->map([
             'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error'],
+            'message'       => $success ? 'Message sent' : implode(', ', $response['errors']),
         ]);
     }
 
@@ -169,7 +179,7 @@ class Pushover extends AbstractGateway implements Notifier
         $msg .= " (Raw response API {$rawResponse->getBody()})";
 
         return [
-            'error' => $msg,
+            'errors' => [$msg],
         ];
     }
 
@@ -180,6 +190,6 @@ class Pushover extends AbstractGateway implements Notifier
      */
     protected function getRequestUrl()
     {
-        return $this->endpoint;
+        return $this->endpoint.'/'.$this->version;
     }
 }
