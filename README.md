@@ -11,6 +11,7 @@ Supported Gateways:
 * Gitter
 * PagerDuty
 * Webhook
+* Pushover
 * Intercom (soon)
 * Amazon SES (soon)
 * Amazon SNS (soon)
@@ -22,10 +23,10 @@ Supported Gateways:
 
 ### Laravel 4.1, 4.2, 5.0
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `dinkbit/notifyme`.
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `notifymehq/notifyme`.
 
 	"require": {
-		"dinkbit/notifyme": "dev-master"
+		"notifymehq/notifyme": "dev-master"
 	}
 
 Next, update Composer from the Terminal:
@@ -64,12 +65,14 @@ First, you should configure the authentication providers you would like to use i
 		'pagerduty' => [
 			'token' => '',
 		],
+		'pushover' => [
+			'token' => '',
+		],
 	];
 
 ### Examples
 
 ```php
-
 // Inject the interface
 
 use NotifyMeHQ\NotifyMe\Contracts\Factory as NotifyMe;
@@ -101,7 +104,6 @@ You can override the service configuration and set specific service options on t
 **Interface example**
 
 ```php
-
 $notifyme->driver($diver)->notify($message, $params);
 
 ```
@@ -109,7 +111,6 @@ $notifyme->driver($diver)->notify($message, $params);
 **Gateway example**
 
 ```php
-
 $notifyme->driver('slack')->notify('You did it!', ['to' => '#everybody']);
 
 $notifyme->driver('hipchat')->notify('You did it!', ['to' => 'everybody', 'notify' => true]);
@@ -123,6 +124,8 @@ $notifyme->driver('gitter')->notify('You did it!', ['to' => ':roomId']);
 $notifyme->driver('pagerduty')->notify('This is working awesome!', ['to' => ':incident_key']);
 
 $notifyme->driver('webhook')->notify(['message' => 'This is working awesome!'], ['to' => 'http://example.com']);
+
+$notifyme->driver('pushover')->notify(['message' => 'This is working awesome!'], ['to' => ':pushover_user']);
 
 ```
 
