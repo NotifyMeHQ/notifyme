@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Gitter;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class GitterGateway extends AbstractGateway implements Gateway, Notifier
+class GitterGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -41,7 +41,7 @@ class GitterGateway extends AbstractGateway implements Gateway, Notifier
     {
         $this->requires($config, ['token']);
 
-        $config['from'] = array_get($config, 'from', '');
+        $config['from'] = Arr::get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -56,7 +56,7 @@ class GitterGateway extends AbstractGateway implements Gateway, Notifier
      */
     public function notify($message, array $options = [])
     {
-        $room = array_get($options, 'to', '');
+        $room = Arr::get($options, 'to', '');
 
         $params = $this->addMessage($message, $params, $options);
 
@@ -74,7 +74,7 @@ class GitterGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = array_get($options, 'token', $this->config['token']);
+        $params['token'] = Arr::get($options, 'token', $this->config['token']);
 
         $params['text'] = $message;
 

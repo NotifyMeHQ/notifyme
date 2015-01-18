@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\HipChat;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class HipChatGateway extends AbstractGateway implements Gateway, Notifier
+class HipChatGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -55,7 +55,7 @@ class HipChatGateway extends AbstractGateway implements Gateway, Notifier
     {
         $this->requires($config, ['token']);
 
-        $config['from'] = array_get($config, 'from', '');
+        $config['from'] = Arr::get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -70,7 +70,7 @@ class HipChatGateway extends AbstractGateway implements Gateway, Notifier
      */
     public function notify($message, array $options = [])
     {
-        $room = array_get($options, 'to', '');
+        $room = Arr::get($options, 'to', '');
 
         $params = $this->addMessage($message, $params, $options);
 
@@ -88,12 +88,12 @@ class HipChatGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['auth_token'] = array_get($options, 'token', $this->config['token']);
+        $params['auth_token'] = Arr::get($options, 'token', $this->config['token']);
 
-        $params['id'] = array_get($options, 'to', '');
-        $params['from'] = array_get($options, 'from', $this->config['from']);
+        $params['id'] = Arr::get($options, 'to', '');
+        $params['from'] = Arr::get($options, 'from', $this->config['from']);
 
-        $color = array_get($options, 'color', 'yellow');
+        $color = Arr::get($options, 'color', 'yellow');
 
         if (!in_array($color, $this->colours)) {
             $color = 'yellow';
@@ -101,8 +101,8 @@ class HipChatGateway extends AbstractGateway implements Gateway, Notifier
 
         $params['color'] = $color;
         $params['message'] = $message;
-        $params['notify'] = array_get($options, 'notify', false);
-        $params['message_format'] = array_get($options, 'format', 'text');
+        $params['notify'] = Arr::get($options, 'notify', false);
+        $params['message_format'] = Arr::get($options, 'format', 'text');
 
         return $params;
     }
