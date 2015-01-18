@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Campfire;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class CampfireGateway extends AbstractGateway implements Gateway, Notifier
+class CampfireGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -93,7 +93,7 @@ class CampfireGateway extends AbstractGateway implements Gateway, Notifier
      */
     public function notify($message, array $options = [])
     {
-        $room = array_get($options, 'to', '');
+        $room = Arr::get($options, 'to', '');
 
         $params = $this->addMessage($message, $params, $options);
 
@@ -111,10 +111,10 @@ class CampfireGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = array_get($options, 'token', $this->config['token']);
-        $params['from'] = array_get($options, 'from', $this->config['from']);
+        $params['token'] = Arr::get($options, 'token', $this->config['token']);
+        $params['from'] = Arr::get($options, 'from', $this->config['from']);
 
-        $type = array_get($options, 'type', 'TextMessage');
+        $type = Arr::get($options, 'type', 'TextMessage');
 
         if (!in_array($type, $this->allowedTypeMessages)) {
             $type = 'TextMessage';

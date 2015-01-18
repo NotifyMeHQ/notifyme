@@ -1,9 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Contracts;
+namespace NotifyMeHQ\NotifyMe;
 
-interface Notifier
+interface GatewayInterface
 {
+    /**
+     * Get gateway display name.
+     *
+     * @return string
+     */
+    public function getDisplayName()
+
     /**
      * Send a notification.
      *

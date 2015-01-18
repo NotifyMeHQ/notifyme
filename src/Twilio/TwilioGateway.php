@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Twilio;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class TwilioGateway extends AbstractGateway implements Gateway, Notifier
+class TwilioGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -54,8 +54,8 @@ class TwilioGateway extends AbstractGateway implements Gateway, Notifier
      */
     public function notify($message, array $options = [])
     {
-        $this->config['client'] = array_get($options, 'client', $this->config['client']);
-        $this->config['token'] = array_get($options, 'token', $this->config['token']);
+        $this->config['client'] = Arr::get($options, 'client', $this->config['client']);
+        $this->config['token'] = Arr::get($options, 'token', $this->config['token']);
 
         unset($options['client']);
         unset($options['token']);
@@ -76,8 +76,8 @@ class TwilioGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['From'] = array_get($options, 'from', $this->config['from']);
-        $params['To'] = array_get($options, 'to', '');
+        $params['From'] = Arr::get($options, 'from', $this->config['from']);
+        $params['To'] = Arr::get($options, 'to', '');
         $params['Body'] = $message;
 
         return $params;

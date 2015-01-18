@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Pushover;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class PushoverGateway extends AbstractGateway implements Gateway, Notifier
+class PushoverGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -100,10 +100,10 @@ class PushoverGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = array_get($options, 'token', $this->config['token']);
-        $params['user'] = array_get($options, 'to', '');
-        $params['device'] = array_get($options, 'device', '');
-        $params['title'] = array_get($options, 'title', '');
+        $params['token'] = Arr::get($options, 'token', $this->config['token']);
+        $params['user'] = Arr::get($options, 'to', '');
+        $params['device'] = Arr::get($options, 'device', '');
+        $params['title'] = Arr::get($options, 'title', '');
         $params['message'] = $message;
 
         if (isset($params['sound'])) {

@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\PagerDuty;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class PagerDutyGateway extends AbstractGateway implements Gateway, Notifier
+class PagerDutyGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -41,7 +41,7 @@ class PagerDutyGateway extends AbstractGateway implements Gateway, Notifier
     {
         $this->requires($config, ['token']);
 
-        $config['from'] = array_get($config, 'from', '');
+        $config['from'] = Arr::get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -72,12 +72,12 @@ class PagerDutyGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['service_key'] = array_get($options, 'token', $this->config['token']);
-        $params['incident_key'] = array_get($options, 'to', 'NotifyMe');
-        $params['event_type'] = array_get($options, 'event_type', 'trigger');
-        $params['client'] = array_get($options, 'client', null);
-        $params['client_url'] = array_get($options, 'client_url', null);
-        $params['details'] = array_get($options, 'details', null);
+        $params['service_key'] = Arr::get($options, 'token', $this->config['token']);
+        $params['incident_key'] = Arr::get($options, 'to', 'NotifyMe');
+        $params['event_type'] = Arr::get($options, 'event_type', 'trigger');
+        $params['client'] = Arr::get($options, 'client', null);
+        $params['client_url'] = Arr::get($options, 'client_url', null);
+        $params['details'] = Arr::get($options, 'details', null);
         $params['description'] = $message;
 
         return $params;

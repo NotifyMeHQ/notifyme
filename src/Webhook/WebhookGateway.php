@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Webhook;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class WebhookGateway extends AbstractGateway implements Gateway, Notifier
+class WebhookGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway display name.
@@ -38,7 +38,7 @@ class WebhookGateway extends AbstractGateway implements Gateway, Notifier
      */
     public function notify($message, array $options = [])
     {
-        $to = array_get($options, 'to', '');
+        $to = Arr::get($options, 'to', '');
 
         return $this->commit('post', $to, $message);
     }

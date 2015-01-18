@@ -3,11 +3,11 @@
 namespace NotifyMeHQ\NotifyMe\Slack;
 
 use NotifyMeHQ\NotifyMe\AbstractGateway;
-use NotifyMeHQ\NotifyMe\Contracts\Gateway;
-use NotifyMeHQ\NotifyMe\Contracts\Notifier;
+use NotifyMeHQ\NotifyMe\Arr;
+use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\Response;
 
-class SlackGateway extends AbstractGateway implements Gateway, Notifier
+class SlackGateway extends AbstractGateway implements GatewayInterface
 {
     /**
      * Gateway api endpoint.
@@ -34,7 +34,7 @@ class SlackGateway extends AbstractGateway implements Gateway, Notifier
     {
         $this->requires($config, ['token']);
 
-        $config['username'] = array_get($config, 'from', '');
+        $config['username'] = Arr::get($config, 'from', '');
 
         $this->config = $config;
     }
@@ -67,9 +67,9 @@ class SlackGateway extends AbstractGateway implements Gateway, Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = array_get($options, 'token', $this->config['token']);
-        $params['username'] = array_get($options, 'from', $this->config['from']);
-        $params['channel'] = array_get($options, 'to', '');
+        $params['token'] = Arr::get($options, 'token', $this->config['token']);
+        $params['username'] = Arr::get($options, 'from', $this->config['from']);
+        $params['channel'] = Arr::get($options, 'to', '');
         $params['text'] = $this->formatMessage($message);
 
         return $params;
