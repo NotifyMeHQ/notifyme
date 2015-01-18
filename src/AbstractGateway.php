@@ -13,6 +13,7 @@
 namespace NotifyMeHQ\NotifyMe;
 
 use GuzzleHttp\Client;
+use InvalidArgumentException;
 
 abstract class AbstractGateway
 {
@@ -121,7 +122,7 @@ abstract class AbstractGateway
     {
         foreach ($required as $key) {
             if (!array_key_exists(trim($key), $options)) {
-                throw new \InvalidArgumentException("Missing required parameter: {$key}");
+                throw new InvalidArgumentException("Missing required parameter: {$key}");
             }
         }
 
