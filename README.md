@@ -21,23 +21,23 @@ Supported Gateways:
 
 ## Installation
 
-### Laravel 4.1, 4.2, 5.0
+NotifyMe is currently compatible with Laravel 4.1, 4.2, and 5.0.
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `notifymehq/notifyme`.
+To get the latest version of NotifyMe, simply add the following line to the require block of your `composer.json` file:
 
-	"require": {
-		"notifymehq/notifyme": "dev-master"
-	}
+```
+"notifymehq/notifyme": "~1.0@dev"
+```
 
-Next, update Composer from the Terminal:
+You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
 
-    composer update
+Once NotifyMe is installed, you need to register the service provider. Open up `config/app.php` and add the following to the `providers` key:
 
-Once this operation completes, the final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+```
+'NotifyMeHQ\NotifyMe\NotifyMeServiceProvider'
+```
 
-    'NotifyMeHQ\NotifyMe\NotifyMeServiceProvider'
-
-### Add Configuration
+## Configuration
 
 First, you should configure the authentication providers you would like to use in your `config/services.php` file.
 
@@ -70,7 +70,7 @@ First, you should configure the authentication providers you would like to use i
 		],
 	];
 
-### Examples
+## Examples
 
 ```php
 // Inject the interface
@@ -129,7 +129,7 @@ $notifyme->driver('pushover')->notify(['message' => 'This is working awesome!'],
 
 ```
 
-### Todo
+## Todo
 
 - [ ] Add tests
 - [ ] Add docs
