@@ -24,16 +24,6 @@ abstract class AbstractGateway
     protected $config;
 
     /**
-     * Get gateway display name.
-     *
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return property_exists($this->displayName) ? $this->displayName : '';
-    }
-
-    /**
      * Commit a HTTP request.
      *
      * @param string   $method
