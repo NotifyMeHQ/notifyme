@@ -12,18 +12,8 @@
 
 namespace NotifyMeHQ\NotifyMe;
 
-use GuzzleHttp\Client;
-use InvalidArgumentException;
-
-abstract class AbstractGateway
+trait HttpGatewayTrait
 {
-    /**
-     * Configuration options.
-     *
-     * @var string[]
-     */
-    protected $config;
-
     /**
      * Commit a HTTP request.
      *
@@ -87,16 +77,6 @@ abstract class AbstractGateway
     abstract protected function getRequestUrl();
 
     /**
-     * Get a fresh instance of the Guzzle HTTP client.
-     *
-     * @return \GuzzleHttp\Client
-     */
-    protected function getHttpClient()
-    {
-        return new Client();
-    }
-
-    /**
      * Build requirest url from string.
      *
      * @param string $endpoint
@@ -106,26 +86,5 @@ abstract class AbstractGateway
     protected function buildUrlFromString($endpoint)
     {
         return $this->getRequestUrl().'/'.$endpoint;
-    }
-
-    /**
-     * Require specific config values.
-     *
-     * @param string[] $options
-     * @param string[] $required
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function requires($options, array $required = [])
-    {
-        foreach ($required as $key) {
-            if (!array_key_exists(trim($key), $options)) {
-                throw new InvalidArgumentException("Missing required parameter: {$key}");
-            }
-        }
-
-        return true;
     }
 }
