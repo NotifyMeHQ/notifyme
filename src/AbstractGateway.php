@@ -1,10 +1,10 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe;
 
-use NotifyMeHQ\NotifyMe\Contracts\Gateway as GatewayContract;
+use GuzzleHttp\Client;
 
-abstract class AbstractGateway implements GatewayContract
+abstract class AbstractGateway
 {
     /**
      * Configuration options.
@@ -12,42 +12,6 @@ abstract class AbstractGateway implements GatewayContract
      * @var string[]
      */
     protected $config;
-
-    /**
-     * Inject the configuration for a Gateway.
-     *
-     * @param $config
-     */
-    abstract public function __construct($config);
-
-    /**
-     * Commit a HTTP request.
-     *
-     * @param string   $method
-     * @param string   $url
-     * @param string[] $params
-     * @param string[] $options
-     *
-     * @return mixed
-     */
-    abstract protected function commit($method = 'post', $url, $params = [], $options = []);
-
-    /**
-     * Map HTTP response to response object.
-     *
-     * @param bool  $success
-     * @param array $response
-     *
-     * @return \NotifyMeHQ\NotifyMe\Response
-     */
-    abstract public function mapResponse($success, $response);
-
-    /**
-     * Get the gateway request url.
-     *
-     * @return mixed
-     */
-    abstract protected function getRequestUrl();
 
     /**
      * Get gateway display name.
@@ -60,13 +24,75 @@ abstract class AbstractGateway implements GatewayContract
     }
 
     /**
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
+     */
+    abstract protected function commit($method = 'post', $url, array $params = [], array $options = []);
+
+    /**
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
+     */
+    abstract protected function mapResponse($success, $response);
+
+    /**
+     * Parse a json response to an array.
+     *
+     * @param string $body
+     *
+     * @return array
+     */
+    protected function parseResponse($body)
+    {
+        return json_decode($body, true);
+    }
+
+    /**
+     * Get error response from server or fallback to general error.
+     *
+     * @param string $rawResponse
+     *
+     * @return array
+     */
+    protected function responseError($rawResponse)
+    {
+        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
+    }
+
+    /**
+     * Get the default json response.
+     *
+     * @param string $rawResponse
+     *
+     * @return array
+     */
+    abstract protected function jsonError($rawResponse)
+
+    /**
+     * Get the gateway request url.
+     *
+     * @return string
+     */
+    abstract protected function getRequestUrl();
+
+    /**
      * Get a fresh instance of the Guzzle HTTP client.
      *
      * @return \GuzzleHttp\Client
      */
     protected function getHttpClient()
     {
-        return new \GuzzleHttp\Client();
+        return new Client();
     }
 
     /**
@@ -79,20 +105,6 @@ abstract class AbstractGateway implements GatewayContract
     protected function buildUrlFromString($endpoint)
     {
         return $this->getRequestUrl().'/'.$endpoint;
-    }
-
-    /**
-     * Get value from array or provide default.
-     *
-     * @param array  $array
-     * @param string $key
-     * @param null   $default
-     *
-     * @return mixed
-     */
-    public function array_get($array, $key, $default = null)
-    {
-        return isset($array[$key]) ? $array[$key] : $default;
     }
 
     /**

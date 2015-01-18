@@ -1,14 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe\Pushover;
 
+use NotifyMeHQ\NotifyMe\AbstractGateway;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway;
 use NotifyMeHQ\NotifyMe\Contracts\Notifier;
 use NotifyMeHQ\NotifyMe\Response;
 
-class Pushover extends AbstractGateway implements Notifier
+class PushoverGateway extends AbstractGateway implements Gateway, Notifier
 {
     /**
-     * Gateway API endpoint.
+     * Gateway api endpoint.
      *
      * @var string
      */
@@ -22,7 +24,7 @@ class Pushover extends AbstractGateway implements Notifier
     protected $displayName = 'pushover';
 
     /**
-     * Pushover API version.
+     * Pushover api version.
      *
      * @var string
      */
@@ -55,13 +57,17 @@ class Pushover extends AbstractGateway implements Notifier
         'persistent',
         'echo',
         'updown',
-        'none', // silent
+        'none',
     ];
 
     /**
-     * {@inheritdoc}
+     * Create a new pushover gateway instance.
+     *
+     * @param string[] $config
+     *
+     * @return void
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->requires($config, ['token']);
 
@@ -69,12 +75,15 @@ class Pushover extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Send a notification.
+     *
+     * @param string   $message
+     * @param string[] $options
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = [])
+    public function notify($message, array $options = [])
     {
-        $params = [];
-
         $params = $this->addMessage($message, $params, $options);
 
         return $this->commit('post', $this->buildUrlFromString('messages.json'), $params);
@@ -91,10 +100,10 @@ class Pushover extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['user'] = $this->array_get($options, 'to', '');
-        $params['device'] = $this->array_get($options, 'device', '');
-        $params['title'] = $this->array_get($options, 'title', '');
+        $params['token'] = array_get($options, 'token', $this->config['token']);
+        $params['user'] = array_get($options, 'to', '');
+        $params['device'] = array_get($options, 'device', '');
+        $params['title'] = array_get($options, 'title', '');
         $params['message'] = $message;
 
         if (isset($params['sound'])) {
@@ -105,9 +114,16 @@ class Pushover extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
      */
-    protected function commit($method = 'post', $url, $params = [], $options = [])
+    protected function commit($method = 'post', $url, array $params = [], array $options = [])
     {
         $success = false;
 
@@ -118,7 +134,7 @@ class Pushover extends AbstractGateway implements Notifier
             'headers'         => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
-            'body'            => $params,
+            'body' => $params,
         ]);
 
         if ($rawResponse->getStatusCode() == 200) {
@@ -132,48 +148,29 @@ class Pushover extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function mapResponse($success, $response)
+    protected function mapResponse($success, $response)
     {
         return (new Response())->setRaw($response)->map([
-            'success'       => $success,
-            'message'       => $success ? 'Message sent' : implode(', ', $response['errors']),
+            'success' => $success,
+            'message' => $success ? 'Message sent' : implode(', ', $response['errors']),
         ]);
     }
 
     /**
-     * Parse JSON response to array.
-     *
-     * @param  $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
-
-    /**
-     * Get error response from server or fallback to general error.
+     * Get the default json response.
      *
      * @param string $rawResponse
      *
      * @return array
      */
-    protected function responseError($rawResponse)
-    {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
-    }
-
-    /**
-     * Default JSON response.
-     *
-     * @param string $rawResponse
-     *
-     * @return array
-     */
-    public function jsonError($rawResponse)
+    protected function jsonError($rawResponse)
     {
         $msg = 'API Response not valid.';
         $msg .= " (Raw response API {$rawResponse->getBody()})";

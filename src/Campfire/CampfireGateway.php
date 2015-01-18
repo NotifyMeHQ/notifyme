@@ -1,14 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe\Campfire;
 
+use NotifyMeHQ\NotifyMe\AbstractGateway;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway;
 use NotifyMeHQ\NotifyMe\Contracts\Notifier;
 use NotifyMeHQ\NotifyMe\Response;
 
-class Campfire extends AbstractGateway implements Notifier
+class CampfireGateway extends AbstractGateway implements Gateway, Notifier
 {
     /**
-     * Gateway API endpoint.
+     * Gateway api endpoint.
      *
      * @var string
      */
@@ -39,7 +41,6 @@ class Campfire extends AbstractGateway implements Notifier
      * @var string[]
      */
     protected $allowedSounds = [
-        // hard to keep this list up-to-date
         '56k',
         'bueller',
         'crickets',
@@ -69,9 +70,13 @@ class Campfire extends AbstractGateway implements Notifier
     ];
 
     /**
-     * {@inheritdoc}
+     * Create a new campfire gateway instance.
+     *
+     * @param string[] $config
+     *
+     * @return void
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->requires($config, ['from', 'token']);
 
@@ -79,13 +84,16 @@ class Campfire extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Send a notification.
+     *
+     * @param string   $message
+     * @param string[] $options
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = [])
+    public function notify($message, array $options = [])
     {
-        $params = [];
-
-        $room = $this->array_get($options, 'to', '');
+        $room = array_get($options, 'to', '');
 
         $params = $this->addMessage($message, $params, $options);
 
@@ -103,12 +111,12 @@ class Campfire extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['from'] = $this->array_get($options, 'from', $this->config['from']);
+        $params['token'] = array_get($options, 'token', $this->config['token']);
+        $params['from'] = array_get($options, 'from', $this->config['from']);
 
-        $type = $this->array_get($options, 'type', 'TextMessage');
+        $type = array_get($options, 'type', 'TextMessage');
 
-        if (! in_array($type, $this->allowedTypeMessages)) {
+        if (!in_array($type, $this->allowedTypeMessages)) {
             $type = 'TextMessage';
         }
 
@@ -124,9 +132,16 @@ class Campfire extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
      */
-    protected function commit($method = 'post', $url, $params = [], $options = [])
+    protected function commit($method = 'post', $url, array $params = [], array $options = [])
     {
         $success = false;
 
@@ -162,48 +177,29 @@ class Campfire extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function mapResponse($success, $response)
+    protected function mapResponse($success, $response)
     {
         return (new Response())->setRaw($response)->map([
-            'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error'],
+            'success' => $success,
+            'message' => $success ? 'Message sent' : $response['error'],
         ]);
     }
 
     /**
-     * Parse JSON response to array.
-     *
-     * @param  $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
-
-    /**
-     * Get error response from server or fallback to general error.
+     * Get the default json response.
      *
      * @param string $rawResponse
      *
      * @return array
      */
-    protected function responseError($rawResponse)
-    {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
-    }
-
-    /**
-     * Default JSON response.
-     *
-     * @param string $rawResponse
-     *
-     * @return array
-     */
-    public function jsonError($rawResponse)
+    protected function jsonError($rawResponse)
     {
         $msg = 'API Response not valid.';
         $msg .= " (Raw response API {$rawResponse->getBody()})";

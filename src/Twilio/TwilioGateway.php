@@ -1,14 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe\Twilio;
 
+use NotifyMeHQ\NotifyMe\AbstractGateway;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway;
 use NotifyMeHQ\NotifyMe\Contracts\Notifier;
 use NotifyMeHQ\NotifyMe\Response;
 
-class Twilio extends AbstractGateway implements Notifier
+class TwilioGateway extends AbstractGateway implements Gateway, Notifier
 {
     /**
-     * Gateway API endpoint.
+     * Gateway api endpoint.
      *
      * @var string
      */
@@ -22,16 +24,20 @@ class Twilio extends AbstractGateway implements Notifier
     protected $displayName = 'twilio';
 
     /**
-     * Twillio API version.
+     * Twillio api version.
      *
      * @var string
      */
     protected $version = '2010-04-01';
 
     /**
-     * {@inheritdoc}
+     * Create a new twillo gateway instance.
+     *
+     * @param string[] $config
+     *
+     * @return void
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->requires($config, ['from', 'client', 'token']);
 
@@ -39,14 +45,17 @@ class Twilio extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Send a notification.
+     *
+     * @param string   $message
+     * @param string[] $options
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = [])
+    public function notify($message, array $options = [])
     {
-        $params = [];
-
-        $this->config['client'] = $this->array_get($options, 'client', $this->config['client']);
-        $this->config['token'] = $this->array_get($options, 'token', $this->config['token']);
+        $this->config['client'] = array_get($options, 'client', $this->config['client']);
+        $this->config['token'] = array_get($options, 'token', $this->config['token']);
 
         unset($options['client']);
         unset($options['token']);
@@ -67,17 +76,24 @@ class Twilio extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['From'] = $this->array_get($options, 'from', $this->config['from']);
-        $params['To'] = $this->array_get($options, 'to', '');
+        $params['From'] = array_get($options, 'from', $this->config['from']);
+        $params['To'] = array_get($options, 'to', '');
         $params['Body'] = $message;
 
         return $params;
     }
 
     /**
-     * {@inheritdoc}
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
      */
-    protected function commit($method = 'post', $url, $params = [], $options = [])
+    protected function commit($method = 'post', $url, array $params = [], array $options = [])
     {
         $success = false;
 
@@ -109,48 +125,29 @@ class Twilio extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function mapResponse($success, $response)
+    protected function mapResponse($success, $response)
     {
         return (new Response())->setRaw($response)->map([
-            'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['message'],
+            'success' => $success,
+            'message' => $success ? 'Message sent' : $response['message'],
         ]);
     }
 
     /**
-     * Parse JSON response to array.
-     *
-     * @param  $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
-
-    /**
-     * Get error response from server or fallback to general error.
+     * Get the default json response.
      *
      * @param string $rawResponse
      *
      * @return array
      */
-    protected function responseError($rawResponse)
-    {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
-    }
-
-    /**
-     * Default JSON response.
-     *
-     * @param string $rawResponse
-     *
-     * @return array
-     */
-    public function jsonError($rawResponse)
+    protected function jsonError($rawResponse)
     {
         $msg = 'API Response not valid.';
         $msg .= " (Raw response API {$rawResponse->getBody()})";

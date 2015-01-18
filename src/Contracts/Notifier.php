@@ -5,12 +5,12 @@ namespace NotifyMeHQ\NotifyMe\Contracts;
 interface Notifier
 {
     /**
-     * Send notification using Gateway.
+     * Send a notification.
      *
      * @param string   $message
      * @param string[] $options
      *
      * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = []);
+    public function notify($message, array $options = []);
 }
