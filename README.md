@@ -5,20 +5,25 @@
 Common interface for notification services.
 
 Supported Gateways:
-* Slack
-* HipChat
-* Twilio
-* Campfire
-* Gitter
-* PagerDuty
-* Webhook
-* Pushover
-* Intercom (soon)
-* Amazon SES (soon)
-* Amazon SNS (soon)
-* Twitter (soon)
-* Mail (soon)
-* Yo (soon)
+* [Campfire](https://github.com/notifymehq/campfire)
+* [GitHub](https://github.com/notifymehq/github) (soon)
+* [Gitter](https://github.com/notifymehq/gitter)
+* [HipChat](https://github.com/notifymehq/hipchat)
+* [Intercom](https://github.com/notifymehq/intercom) (soon)
+* [Mail](https://github.com/notifymehq/mail) (soon)
+* [PagerDuty](https://github.com/notifymehq/pagerduty)
+* [Pushover](https://github.com/notifymehq/pushover)
+* [SES](https://github.com/notifymehq/ses) (soon)
+* [Slack](https://github.com/notifymehq/slack)
+* [SNS](https://github.com/notifymehq/sns) (soon)
+* [Twilio](https://github.com/notifymehq/twilio)
+* [Twitter](https://github.com/notifymehq/twitter) (soon)
+* [Webhook](https://github.com/notifymehq/webhook)
+* [Yo](https://github.com/notifymehq/yo) (soon)
+
+Supported Bridges:
+* [Laravel 4](https://github.com/notifymehq/laravel4)
+* [Laravel 5](https://github.com/notifymehq/laravel5)
 
 ## Todo
 
