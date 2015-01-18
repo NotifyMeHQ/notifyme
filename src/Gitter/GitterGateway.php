@@ -1,14 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe\Gitter;
 
+use NotifyMeHQ\NotifyMe\AbstractGateway;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway;
 use NotifyMeHQ\NotifyMe\Contracts\Notifier;
 use NotifyMeHQ\NotifyMe\Response;
 
-class Gitter extends AbstractGateway implements Notifier
+class GitterGateway extends AbstractGateway implements Gateway, Notifier
 {
     /**
-     * Gateway API endpoint.
+     * Gateway api endpoint.
      *
      * @var string
      */
@@ -22,32 +24,39 @@ class Gitter extends AbstractGateway implements Notifier
     protected $displayName = 'gitter';
 
     /**
-     * Gitter API version.
+     * Gitter api version.
      *
      * @var string
      */
     protected $version = 'v1';
 
     /**
-     * {@inheritdoc}
+     * Create a new gitter gateway instance.
+     *
+     * @param string[] $config
+     *
+     * @return void
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->requires($config, ['token']);
 
-        $config['from'] = $this->array_get($config, 'from', '');
+        $config['from'] = array_get($config, 'from', '');
 
         $this->config = $config;
     }
 
     /**
-     * {@inheritdoc}
+     * Send a notification.
+     *
+     * @param string   $message
+     * @param string[] $options
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = [])
+    public function notify($message, array $options = [])
     {
-        $params = [];
-
-        $room = $this->array_get($options, 'to', '');
+        $room = array_get($options, 'to', '');
 
         $params = $this->addMessage($message, $params, $options);
 
@@ -65,7 +74,7 @@ class Gitter extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['token'] = $this->array_get($options, 'token', $this->config['token']);
+        $params['token'] = array_get($options, 'token', $this->config['token']);
 
         $params['text'] = $message;
 
@@ -73,9 +82,16 @@ class Gitter extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
      */
-    protected function commit($method = 'post', $url, $params = [], $options = [])
+    protected function commit($method = 'post', $url, array $params = [], array $options = [])
     {
         $success = false;
 
@@ -110,48 +126,29 @@ class Gitter extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function mapResponse($success, $response)
+    protected function mapResponse($success, $response)
     {
         return (new Response())->setRaw($response)->map([
-            'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error'],
+            'success' => $success,
+            'message' => $success ? 'Message sent' : $response['error'],
         ]);
     }
 
     /**
-     * Parse JSON response to array.
-     *
-     * @param  $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
-
-    /**
-     * Get error response from server or fallback to general error.
+     * Get the default json response.
      *
      * @param string $rawResponse
      *
      * @return array
      */
-    protected function responseError($rawResponse)
-    {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
-    }
-
-    /**
-     * Default JSON response.
-     *
-     * @param string $rawResponse
-     *
-     * @return array
-     */
-    public function jsonError($rawResponse)
+    protected function jsonError($rawResponse)
     {
         $msg = 'API Response not valid.';
         $msg .= " (Raw response API {$rawResponse->getBody()})";

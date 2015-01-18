@@ -1,14 +1,16 @@
 <?php
 
-namespace NotifyMeHQ\NotifyMe\Gateways;
+namespace NotifyMeHQ\NotifyMe\PagerDuty;
 
+use NotifyMeHQ\NotifyMe\AbstractGateway;
+use NotifyMeHQ\NotifyMe\Contracts\Gateway;
 use NotifyMeHQ\NotifyMe\Contracts\Notifier;
 use NotifyMeHQ\NotifyMe\Response;
 
-class PagerDuty extends AbstractGateway implements Notifier
+class PagerDutyGateway extends AbstractGateway implements Gateway, Notifier
 {
     /**
-     * Gateway API endpoint.
+     * Gateway api endpoint.
      *
      * @var string
      */
@@ -22,31 +24,38 @@ class PagerDuty extends AbstractGateway implements Notifier
     protected $displayName = 'pagerduty';
 
     /**
-     * Gitter API version.
+     * PagerDuty api version.
      *
      * @var string
      */
     protected $version = '2010-04-15';
 
     /**
-     * {@inheritdoc}
+     * Create a new pagerduty gateway instance.
+     *
+     * @param string[] $config
+     *
+     * @return void
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->requires($config, ['token']);
 
-        $config['from'] = $this->array_get($config, 'from', '');
+        $config['from'] = array_get($config, 'from', '');
 
         $this->config = $config;
     }
 
     /**
-     * {@inheritdoc}
+     * Send a notification.
+     *
+     * @param string   $message
+     * @param string[] $options
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, $options = [])
+    public function notify($message, array $options = [])
     {
-        $params = [];
-
         $params = $this->addMessage($message, $params, $options);
 
         return $this->commit('post', $this->buildUrlFromString("create_event.json"), $params);
@@ -63,21 +72,28 @@ class PagerDuty extends AbstractGateway implements Notifier
      */
     protected function addMessage($message, array $params, array $options)
     {
-        $params['service_key'] = $this->array_get($options, 'token', $this->config['token']);
-        $params['incident_key'] = $this->array_get($options, 'to', 'NotifyMe');
-        $params['event_type'] = $this->array_get($options, 'event_type', 'trigger');
-        $params['client'] = $this->array_get($options, 'client', null);
-        $params['client_url'] = $this->array_get($options, 'client_url', null);
-        $params['details'] = $this->array_get($options, 'details', null);
+        $params['service_key'] = array_get($options, 'token', $this->config['token']);
+        $params['incident_key'] = array_get($options, 'to', 'NotifyMe');
+        $params['event_type'] = array_get($options, 'event_type', 'trigger');
+        $params['client'] = array_get($options, 'client', null);
+        $params['client_url'] = array_get($options, 'client_url', null);
+        $params['details'] = array_get($options, 'details', null);
         $params['description'] = $message;
 
         return $params;
     }
 
     /**
-     * {@inheritdoc}
+     * Commit a HTTP request.
+     *
+     * @param string   $method
+     * @param string   $url
+     * @param string[] $params
+     * @param string[] $options
+     *
+     * @return mixed
      */
-    protected function commit($method = 'post', $url, $params = [], $options = [])
+    protected function commit($method = 'post', $url, array $params = [], array $options = [])
     {
         $success = false;
 
@@ -86,7 +102,7 @@ class PagerDuty extends AbstractGateway implements Notifier
             'timeout'         => '80',
             'connect_timeout' => '30',
             'headers'         => [
-                'Content-Type'  => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'json' => $params,
         ]);
@@ -106,48 +122,29 @@ class PagerDuty extends AbstractGateway implements Notifier
     }
 
     /**
-     * {@inheritdoc}
+     * Map HTTP response to response object.
+     *
+     * @param bool  $success
+     * @param array $response
+     *
+     * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function mapResponse($success, $response)
+    protected function mapResponse($success, $response)
     {
         return (new Response())->setRaw($response)->map([
-            'success'       => $success,
-            'message'       => $success ? 'Message sent' : $response['error']['message'],
+            'success' => $success,
+            'message' => $success ? 'Message sent' : $response['error']['message'],
         ]);
     }
 
     /**
-     * Parse JSON response to array.
-     *
-     * @param  $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
-
-    /**
-     * Get error response from server or fallback to general error.
+     * Get the default json response.
      *
      * @param string $rawResponse
      *
      * @return array
      */
-    protected function responseError($rawResponse)
-    {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
-    }
-
-    /**
-     * Default JSON response.
-     *
-     * @param string $rawResponse
-     *
-     * @return array
-     */
-    public function jsonError($rawResponse)
+    protected function jsonError($rawResponse)
     {
         $msg = 'API Response not valid.';
         $msg .= " (Raw response API {$rawResponse->getBody()})";
