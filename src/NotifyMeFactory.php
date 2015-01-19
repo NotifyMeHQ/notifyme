@@ -43,12 +43,24 @@ class NotifyMeFactory implements FactoryInterface
             throw new InvalidArgumentException("A driver must be specified.");
         }
 
-        $class = "NotifyMeHQ\{$config['driver']}\{$config['driver']}Factory";
+        $class = $this->getDriverClassName($config['driver']);
 
         if (class_exists($class)) {
-        	return new $class();
+            return new $class();
         }
 
         throw new InvalidArgumentException("Unsupported driver [{$config['driver']}]");
+    }
+
+    /**
+     * Resolve gateway class name from config.
+     *
+     * @param string $driver
+     *
+     * @return string
+     */
+    public function getDriverClassName($driver)
+    {
+        return "NotifyMeHQ\\{$driver}\\{$driver}Factory";
     }
 }
