@@ -32,7 +32,7 @@ class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unsupported driver
+     * @expectedExceptionMessage Unsupported driver [foo].
      */
     public function testNoSupportedDriverSpecified()
     {
