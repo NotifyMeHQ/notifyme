@@ -67,7 +67,7 @@ trait HttpGatewayTrait
      *
      * @return array
      */
-    abstract protected function jsonError($rawResponse)
+    abstract protected function jsonError($rawResponse);
 
     /**
      * Get the gateway request url.
