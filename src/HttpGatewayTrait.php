@@ -77,7 +77,7 @@ trait HttpGatewayTrait
     abstract protected function getRequestUrl();
 
     /**
-     * Build requirest url from string.
+     * Build request url from string.
      *
      * @param string $endpoint
      *
