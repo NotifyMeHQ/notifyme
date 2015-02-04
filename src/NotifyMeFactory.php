@@ -43,7 +43,8 @@ class NotifyMeFactory implements FactoryInterface
             throw new InvalidArgumentException("A driver must be specified.");
         }
 
-        $class = "NotifyMeHQ\\{$config['driver']}\\{$config['driver']}Factory";
+        $dirver = ucfirst($config['driver']);
+        $class = "NotifyMeHQ\\{$dirver}\\{$dirver}Factory";
 
         if (class_exists($class)) {
             return new $class();
