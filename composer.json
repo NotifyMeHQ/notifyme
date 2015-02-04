@@ -43,6 +43,16 @@
             "NotifyMeHQ\\NotifyMe\\Tests\\": "tests/"
         }
     },
+    "suggest": {
+        "notifymehq/campfire": "Campfire gateway for NotifyMe.",
+        "notifymehq/gitter": "Gitter gateway for NotifyMe.",
+        "notifymehq/hipchat": "HipChat gateway for NotifyMe.",
+        "notifymehq/pagerduty": "Pagerduty gateway for NotifyMe.",
+        "notifymehq/pushover": "Pushover gateway for NotifyMe.",
+        "notifymehq/slack": "Slack gateway for NotifyMe.",
+        "notifymehq/twilio": "Twilio gateway for NotifyMe.",
+        "notifymehq/webhook": "Webhook gateway for NotifyMe."
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
