@@ -25,6 +25,40 @@ Supported Bridges:
 * [Laravel 4](https://github.com/notifymehq/laravel4)
 * [Laravel 5](https://github.com/notifymehq/laravel5)
 
+## Usage
+* Create a factory : <code>$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();</code>
+* Make a notifier : <code>$notifier = $factory->make([...]);</code>
+* Notify : <code>$response = $notifier->notify($message, []);</code>
+* CHeck the response : <code>$response->isSent();</code>
+
+### Example
+Here is an exemple of a notification with Slack
+
+	<?php
+
+	// include autoloader
+	include __DIR__ . '/vendor/autoload.php';
+
+	// create a factory for notifications
+	$notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
+
+	// create the new notification for slack
+	$slackNotifier = $notifierFactory->make([
+		// specify that we will use slack
+		'driver'	=> 'slack',
+		// add api token to get access to slack API
+		'token'		=> ''
+	]);
+
+	/* @var \NotifyMeHQ\NotifyMe\Response $response */
+	$response =  $slackNotifier->notify('test message', [
+		'from'	=> 'Super Bot',
+		'to'	=> '#sandbox'
+	]);
+	
+	echo $response->isSent() ? 'message sended' : 'message going nowhere';
+
+
 ## Todo
 
 - [ ] Add docs
