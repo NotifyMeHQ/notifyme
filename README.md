@@ -26,37 +26,42 @@ Supported Bridges:
 * [Laravel 5](https://github.com/notifymehq/laravel5)
 
 ## Usage
-* Create a factory : <code>$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();</code>
-* Make a notifier : <code>$notifier = $factory->make([...]);</code>
-* Notify : <code>$response = $notifier->notify($message, []);</code>
-* CHeck the response : <code>$response->isSent();</code>
+* Create a factory : ```$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();```
+* Make a notifier : ```$notifier = $factory->make([...]);```
+* Notify : ```$response = $notifier->notify($message, []);```
+* CHeck the response : ```$response->isSent();```
 
 ### Example
 Here is an exemple of a notification with Slack
 
-	<?php
+```PHP
+<?php
 
-	// include autoloader
-	include __DIR__ . '/vendor/autoload.php';
+// include autoloader
+include __DIR__ . '/vendor/autoload.php';
 
-	// create a factory for notifications
-	$notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
+// create a factory for notifications
+$notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
 
-	// create the new notification for slack
-	$slackNotifier = $notifierFactory->make([
-		// specify that we will use slack
-		'driver'	=> 'slack',
-		// add api token to get access to slack API
-		'token'		=> ''
-	]);
+// create the new notification for slack
+$slackNotifier = $notifierFactory->make([
+    // specify that we will use slack
+    'driver'    => 'slack',
+    // add api token to get access to slack API
+    'token'     => ''
+]);
 
-	/* @var \NotifyMeHQ\NotifyMe\Response $response */
-	$response =  $slackNotifier->notify('test message', [
-		'from'	=> 'Super Bot',
-		'to'	=> '#sandbox'
-	]);
-	
-	echo $response->isSent() ? 'message sended' : 'message going nowhere';
+/* @var \NotifyMeHQ\NotifyMe\Response $response */
+$response =  $slackNotifier->notify('test message', [
+    // Who send this message, here is a bot called 'Super Bot'
+    'from'  => 'Super Bot',
+    // Set the channel to received the message
+    'to'    => '#sandbox'
+]);
+
+echo $response->isSent() ? 'Message sent' : 'Message going nowhere';
+```
+
 
 
 ## Todo
