@@ -27,20 +27,17 @@ Supported Bridges:
 
 ## Usage
 
-* Create a factory : ```$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();```
-* Make a notifier : ```$notifier = $factory->make([.]);```
-* Notify : ```$response = $notifier->notify($message, [.]);```
-* Check the response : ```$response->isSent();```
+* Create a factory : `$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();`
+* Make a notifier : `$notifier = $factory->make($config);`
+* Notify : `$response = $notifier->notify($message, $options);`
+* Check the response : `$response->isSent();`
 
 ### Example
 
-Here is an exemple of a notification with Slack
+Here is an exemple of a notification with Slack:
 
-```PHP
+```php
 <?php
-
-// include autoloader if needed
-// include __DIR__ . '/vendor/autoload.php';
 
 // create a factory for notifications
 $notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
@@ -48,9 +45,9 @@ $notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
 // create the new notification for slack
 $slackNotifier = $notifierFactory->make([
   // specify that we will use slack
-  'driver'  => 'slack',
+  'driver' => 'slack',
   // add api token to get access to slack API
-  'token'   => ''
+  'token'  => '',
 ]);
 
 /* @var \NotifyMeHQ\NotifyMe\Response $response */
@@ -58,7 +55,7 @@ $response =  $slackNotifier->notify('test message', [
   // Who send this message, here is a bot called 'Super Bot'
   'from' => 'Super Bot',
   // Set the channel to received the message
-  'to'   => '#sandbox'
+  'to'   => '#sandbox',
 ]);
 
 echo $response->isSent() ? 'Message sent' : 'Message going nowhere';
