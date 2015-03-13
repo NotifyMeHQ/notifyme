@@ -17,10 +17,10 @@ interface GatewayInterface
     /**
      * Send a notification.
      *
-     * @param string   $message
-     * @param string[] $options
+     * @param string $to
+     * @param string $message
      *
      * @return \NotifyMeHQ\NotifyMe\Response
      */
-    public function notify($message, array $options = []);
+    public function notify($to, $message);
 }
