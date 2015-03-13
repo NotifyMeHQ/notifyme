@@ -10,8 +10,10 @@ Supported Gateways:
 * [Gitter](https://github.com/notifymehq/gitter)
 * [Hipchat](https://github.com/notifymehq/hipchat)
 * [Intercom](https://github.com/notifymehq/intercom) (soon)
+* [IRC](https://github.com/notifymehq/irc) (soon)
 * [Mail](https://github.com/notifymehq/mail) (soon)
 * [Pagerduty](https://github.com/notifymehq/pagerduty)
+* [Pebble Timeline](https://github.com/notifymehq/pebbletimeline) (soon)
 * [Pushover](https://github.com/notifymehq/pushover)
 * [SES](https://github.com/notifymehq/ses) (soon)
 * [Slack](https://github.com/notifymehq/slack)
@@ -19,6 +21,7 @@ Supported Gateways:
 * [Twilio](https://github.com/notifymehq/twilio)
 * [Twitter](https://github.com/notifymehq/twitter) (soon)
 * [Webhook](https://github.com/notifymehq/webhook)
+* [XMPP](https://github.com/notifymehq/xmpp) (soon)
 * [Yo](https://github.com/notifymehq/yo) (soon)
 
 Supported Bridges:
