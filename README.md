@@ -1,6 +1,8 @@
 # NotifyMe
 
 [![Build Status](https://img.shields.io/travis/notifymehq/notifyme.svg?style=flat-square)](https://travis-ci.org/notifymehq/notifyme)
+[![StyleCI](https://styleci.io/repos/29053236/shield)](https://styleci.io/repos/29053236)
+
 
 Common interface for notification services.
 
@@ -32,34 +34,31 @@ Supported Bridges:
 
 * Create a factory : `$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();`
 * Make a notifier : `$notifier = $factory->make($config);`
-* Notify : `$response = $notifier->notify($message, $options);`
+* Notify : `$response = $notifier->notify($to, $message, $options);`
 * Check the response : `$response->isSent();`
 
 ### Example
 
-Here is an exemple of a notification with Slack:
+Here is an example of a notification with Slack:
 
 ```php
 <?php
 
-// create a factory for notifications
+// Create a factory for notifications
 $notifierFactory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();
 
-// create the new notification for slack
+// Create the new notification for slack
 $slackNotifier = $notifierFactory->make([
-  // specify that we will use slack
+  // Specify that we will use slack
   'driver' => 'slack',
-  // add api token to get access to slack API
+  // Add api token to get access to slack API
   'token'  => '',
+  // Who send this message, here is a bot called 'Super Bot'
+  'from'   => 'Super Bot',
 ]);
 
 /* @var \NotifyMeHQ\NotifyMe\Response $response */
-$response =  $slackNotifier->notify('test message', [
-  // Who send this message, here is a bot called 'Super Bot'
-  'from' => 'Super Bot',
-  // Set the channel to received the message
-  'to'   => '#sandbox',
-]);
+$response =  $slackNotifier->notify('#sandbox', 'test message');
 
 echo $response->isSent() ? 'Message sent' : 'Message going nowhere';
 ```
