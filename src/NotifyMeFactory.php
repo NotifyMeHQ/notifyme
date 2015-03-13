@@ -17,6 +17,13 @@ use InvalidArgumentException;
 class NotifyMeFactory implements FactoryInterface
 {
     /**
+     * The current factory instances.
+     *
+     * @var \NotifyMeHQ\NotifyMe\FactoryInterface[]
+     */
+    protected $factories = [];
+
+    /**
      * Create a new gateway instance.
      *
      * @param string[] $config
@@ -25,29 +32,33 @@ class NotifyMeFactory implements FactoryInterface
      */
     public function make(array $config)
     {
-        return $this->createFactory($config)->make($config);
+        return $this->factory($config['driver'])->make($config);
     }
 
     /**
-     * Create a connector instance based on the configuration.
+     * Get a factory instance by name.
      *
-     * @param string[] $config
+     * @param string $name
      *
      * @throws \InvalidArgumentException
      *
      * @return \NotifyMeHQ\NotifyMe\FactoryInterface
      */
-    public function createFactory(array $config)
+    public function factory($name)
     {
         if (!isset($config['driver'])) {
             throw new InvalidArgumentException("A driver must be specified.");
+        }
+
+        if (isset($this->factories['name'])) {
+            return $this->factories['name'];
         }
 
         $driver = ucfirst($config['driver']);
         $class = "NotifyMeHQ\\{$driver}\\{$driver}Factory";
 
         if (class_exists($class)) {
-            return new $class();
+            return $this->factories['name'] = new $class();
         }
 
         throw new InvalidArgumentException("Unsupported driver [{$config['driver']}].");
