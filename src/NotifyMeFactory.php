@@ -28,10 +28,16 @@ class NotifyMeFactory implements FactoryInterface
      *
      * @param string[] $config
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \NotifyMeHQ\NotifyMe\GatewayInterface
      */
     public function make(array $config)
     {
+        if (!isset($config['driver'])) {
+            throw new InvalidArgumentException("A driver must be specified.");
+        }
+
         return $this->factory($config['driver'])->make($config);
     }
 
@@ -40,27 +46,21 @@ class NotifyMeFactory implements FactoryInterface
      *
      * @param string $name
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \NotifyMeHQ\NotifyMe\FactoryInterface
      */
     public function factory($name)
     {
-        if (!isset($config['driver'])) {
-            throw new InvalidArgumentException("A driver must be specified.");
-        }
-
         if (isset($this->factories['name'])) {
             return $this->factories['name'];
         }
 
-        $driver = ucfirst($config['driver']);
+        $driver = ucfirst($name);
         $class = "NotifyMeHQ\\{$driver}\\{$driver}Factory";
 
         if (class_exists($class)) {
             return $this->factories['name'] = new $class();
         }
 
-        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}].");
+        throw new InvalidArgumentException("Unsupported factory [$name].");
     }
 }
