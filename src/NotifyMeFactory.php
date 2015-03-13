@@ -17,39 +17,50 @@ use InvalidArgumentException;
 class NotifyMeFactory implements FactoryInterface
 {
     /**
-     * Create a new gateway instance.
+     * The current factory instances.
      *
-     * @param string[] $config
-     *
-     * @return \NotifyMeHQ\NotifyMe\GatewayInterface
+     * @var \NotifyMeHQ\NotifyMe\FactoryInterface[]
      */
-    public function make(array $config)
-    {
-        return $this->createFactory($config)->make($config);
-    }
+    protected $factories = [];
 
     /**
-     * Create a connector instance based on the configuration.
+     * Create a new gateway instance.
      *
      * @param string[] $config
      *
      * @throws \InvalidArgumentException
      *
-     * @return \NotifyMeHQ\NotifyMe\FactoryInterface
+     * @return \NotifyMeHQ\NotifyMe\GatewayInterface
      */
-    public function createFactory(array $config)
+    public function make(array $config)
     {
         if (!isset($config['driver'])) {
             throw new InvalidArgumentException("A driver must be specified.");
         }
 
-        $driver = ucfirst($config['driver']);
+        return $this->factory($config['driver'])->make($config);
+    }
+
+    /**
+     * Get a factory instance by name.
+     *
+     * @param string $name
+     *
+     * @return \NotifyMeHQ\NotifyMe\FactoryInterface
+     */
+    public function factory($name)
+    {
+        if (isset($this->factories['name'])) {
+            return $this->factories['name'];
+        }
+
+        $driver = ucfirst($name);
         $class = "NotifyMeHQ\\{$driver}\\{$driver}Factory";
 
         if (class_exists($class)) {
-            return new $class();
+            return $this->factories['name'] = new $class();
         }
 
-        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}].");
+        throw new InvalidArgumentException("Unsupported factory [$name].");
     }
 }
