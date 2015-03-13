@@ -32,10 +32,18 @@ class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Unsupported driver [foo].
+     * @expectedExceptionMessage Unsupported factory [foo].
      */
     public function testNoSupportedDriverSpecified()
     {
         $this->factory->make(['driver' => 'foo']);
+    }
+
+    /**
+     * @expectedExceptionMessage Unsupported factory [foo].
+     */
+    public function testNoSupportedFactorySpecified()
+    {
+        $this->factory->factory('bar');
     }
 }
