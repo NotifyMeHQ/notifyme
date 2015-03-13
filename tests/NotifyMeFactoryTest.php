@@ -40,7 +40,8 @@ class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedExceptionMessage Unsupported factory [foo].
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Unsupported factory [bar].
      */
     public function testNoSupportedFactorySpecified()
     {
