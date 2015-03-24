@@ -24,7 +24,7 @@ Supported Gateways:
 * [Twitter](https://github.com/notifymehq/twitter) (soon)
 * [Webhook](https://github.com/notifymehq/webhook)
 * [XMPP](https://github.com/notifymehq/xmpp) (soon)
-* [Yo](https://github.com/notifymehq/yo) (soon)
+* [Yo](https://github.com/notifymehq/yo)
 
 Supported Bridges:
 * [Laravel 4](https://github.com/notifymehq/laravel4)
