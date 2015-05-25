@@ -2,33 +2,23 @@
     "name": "notifymehq/notifyme",
     "description": "Provides a common interface for notification services",
     "license": "MIT",
-    "keywords": [
-        "notifymehq",
-        "notifyme",
-        "notifications",
-        "integrations",
-        "slack",
-        "hipchat",
-        "campfire",
-        "webhook",
-        "gitter",
-        "twilio",
-        "pagerduty",
-        "laravel",
-        "dinkbit"
-    ],
+    "keywords": ["notifymehq", "notifyme", "notifications", "integrations"],
     "authors": [
         {
-            "name": "Joseph Cohen",
-            "email": "joseph.cohen@dinkbit.com"
+            "name": "James Brooks",
+            "email": "james@cachethq.io"
         },
         {
             "name": "Graham Campbell",
-            "email": "graham@mineuk.com"
+            "email": "graham@cachethq.io"
+        },
+        {
+            "name": "Joseph Cohen",
+            "email": "joe@cachethq.io"
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.5.9"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
