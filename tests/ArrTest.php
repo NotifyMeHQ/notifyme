@@ -3,8 +3,7 @@
 /*
  * This file is part of NotifyMe.
  *
- * (c) Joseph Cohen <joseph.cohen@dinkbit.com>
- * (c) Graham Campbell <graham@mineuk.com>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
