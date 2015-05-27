@@ -34,7 +34,7 @@ class NotifyMeFactory implements FactoryInterface
     public function make(array $config)
     {
         if (!isset($config['driver'])) {
-            throw new InvalidArgumentException("A driver must be specified.");
+            throw new InvalidArgumentException('A driver must be specified.');
         }
 
         return $this->factory($config['driver'])->make($config);
