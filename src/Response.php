@@ -13,7 +13,7 @@ namespace NotifyMeHQ\NotifyMe;
 
 use NotifyMeHQ\Contracts\ResponseInterface;
 
-class Response implements ResponseInterface;
+class Response implements ResponseInterface
 {
     /**
      * Has the message sent by the gateway?
