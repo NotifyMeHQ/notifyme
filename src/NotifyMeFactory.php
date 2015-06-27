@@ -12,7 +12,7 @@
 namespace NotifyMeHQ\NotifyMe;
 
 use InvalidArgumentException;
-use NotifyMe\Contracts\FactoryInterface;
+use NotifyMeHQ\Contracts\FactoryInterface;
 
 class NotifyMeFactory implements FactoryInterface
 {
