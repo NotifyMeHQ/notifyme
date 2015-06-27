@@ -57,7 +57,7 @@ $slackNotifier = $notifierFactory->make([
   'from'   => 'Super Bot',
 ]);
 
-/* @var \NotifyMeHQ\NotifyMe\Response $response */
+/* @var \NotifyMeHQ\Contracts\ResponseInterface $response */
 $response =  $slackNotifier->notify('#sandbox', 'test message');
 
 echo $response->isSent() ? 'Message sent' : 'Message going nowhere';

@@ -31,7 +31,7 @@ trait HttpGatewayTrait
      * @param bool  $success
      * @param array $response
      *
-     * @return \NotifyMeHQ\NotifyMe\Response
+     * @return \NotifyMeHQ\Contracts\ResponseInterface
      */
     abstract protected function mapResponse($success, $response);
 

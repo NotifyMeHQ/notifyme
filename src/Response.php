@@ -11,10 +11,12 @@
 
 namespace NotifyMeHQ\NotifyMe;
 
-class Response
+use NotifyMeHQ\Contracts\ResponseInterface;
+
+class Response implements ResponseInterface;
 {
     /**
-     * Has the message sent by the Gateway?
+     * Has the message sent by the gateway?
      *
      * @var bool
      */
@@ -35,7 +37,7 @@ class Response
     protected $response;
 
     /**
-     * Returns if message has been sent by the Gateway.
+     * Determine if the message has been sent by the gateway.
      *
      * @return bool
      */
@@ -45,7 +47,7 @@ class Response
     }
 
     /**
-     * The response message from the notification gateway.
+     * Get the response message from the gateway.
      *
      * @return string
      */
@@ -55,7 +57,7 @@ class Response
     }
 
     /**
-     * Gateway raw data.
+     * Get the raw data from the gateway.
      *
      * @return array
      */
@@ -69,7 +71,7 @@ class Response
      *
      * @param array $response
      *
-     * @return \NotifyMeHQ\NotifyMe\Response
+     * @return \NotifyMeHQ\Contracts\ResponseInterface
      */
     public function setRaw(array $response)
     {
@@ -83,7 +85,7 @@ class Response
      *
      * @param array $attributes
      *
-     * @return \NotifyMeHQ\NotifyMe\Response
+     * @return \NotifyMeHQ\Contracts\ResponseInterface
      */
     public function map(array $attributes)
     {

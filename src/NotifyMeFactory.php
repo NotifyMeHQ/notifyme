@@ -18,7 +18,7 @@ class NotifyMeFactory implements FactoryInterface
     /**
      * The current factory instances.
      *
-     * @var \NotifyMeHQ\NotifyMe\FactoryInterface[]
+     * @var \NotifyMeHQ\Contracts\FactoryInterface[]
      */
     protected $factories = [];
 
@@ -29,7 +29,7 @@ class NotifyMeFactory implements FactoryInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @return \NotifyMeHQ\NotifyMe\GatewayInterface
+     * @return \NotifyMeHQ\Contracts\GatewayInterface
      */
     public function make(array $config)
     {
@@ -45,7 +45,7 @@ class NotifyMeFactory implements FactoryInterface
      *
      * @param string $name
      *
-     * @return \NotifyMeHQ\NotifyMe\FactoryInterface
+     * @return \NotifyMeHQ\Contracts\FactoryInterface
      */
     public function factory($name)
     {
