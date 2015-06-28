@@ -34,7 +34,7 @@ Supported Bridges:
 
 * Create a factory : `$factory = new NotifyMeHQ\NotifyMe\NotifyMeFactory();`
 * Make a notifier : `$notifier = $factory->make($config);`
-* Notify : `$response = $notifier->notify($to, $message, $options);`
+* Notify : `$response = $notifier->notify($to, $message);`
 * Check the response : `$response->isSent();`
 
 ### Example
