@@ -35,34 +35,23 @@ trait HttpGatewayTrait
      */
     abstract protected function mapResponse($success, $response);
 
-    /**
-     * Parse a json response to an array.
-     *
-     * @param string $body
-     *
-     * @return array
-     */
-    protected function parseResponse($body)
-    {
-        return json_decode($body, true);
-    }
 
     /**
      * Get error response from server or fallback to general error.
      *
-     * @param string $rawResponse
+     * @param \GuzzleHttp\Message\Response $rawResponse
      *
      * @return array
      */
     protected function responseError($rawResponse)
     {
-        return $this->parseResponse($rawResponse->getBody()) ?: $this->jsonError($rawResponse);
+        return $rawResponse->json() ?: $this->jsonError($rawResponse);
     }
 
     /**
      * Get the default json response.
      *
-     * @param string $rawResponse
+     * @param \GuzzleHttp\Message\Response $rawResponse
      *
      * @return array
      */
