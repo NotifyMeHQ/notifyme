@@ -14,28 +14,6 @@ namespace NotifyMeHQ\NotifyMe;
 trait HttpGatewayTrait
 {
     /**
-     * Commit a HTTP request.
-     *
-     * @param string   $method
-     * @param string   $url
-     * @param string[] $params
-     * @param string[] $options
-     *
-     * @return mixed
-     */
-    abstract protected function commit($method = 'post', $url, array $params = [], array $options = []);
-
-    /**
-     * Map HTTP response to response object.
-     *
-     * @param bool  $success
-     * @param array $response
-     *
-     * @return \NotifyMeHQ\Contracts\ResponseInterface
-     */
-    abstract protected function mapResponse($success, $response);
-
-    /**
      * Get error response from server or fallback to general error.
      *
      * @param \GuzzleHttp\Message\Response $rawResponse
@@ -57,13 +35,6 @@ trait HttpGatewayTrait
     abstract protected function jsonError($rawResponse);
 
     /**
-     * Get the gateway request url.
-     *
-     * @return string
-     */
-    abstract protected function getRequestUrl();
-
-    /**
      * Build request url from string.
      *
      * @param string $endpoint
@@ -74,4 +45,11 @@ trait HttpGatewayTrait
     {
         return $this->getRequestUrl().'/'.$endpoint;
     }
+
+    /**
+     * Get the gateway request url.
+     *
+     * @return string
+     */
+    abstract protected function getRequestUrl();
 }
