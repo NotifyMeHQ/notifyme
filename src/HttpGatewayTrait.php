@@ -51,13 +51,17 @@ trait HttpGatewayTrait
     /**
      * Build request url from string.
      *
-     * @param string $endpoint
+     * @param string|null $endpoint
      *
      * @return string
      */
-    protected function buildUrlFromString($endpoint)
+    protected function buildUrlFromString($endpoint = null)
     {
-        return $this->getRequestUrl().'/'.$endpoint;
+        if ($endpoint) {
+            return $this->getRequestUrl().'/'.$endpoint;
+        }
+
+        return $this->getRequestUrl();
     }
 
     /**
