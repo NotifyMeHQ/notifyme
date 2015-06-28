@@ -35,7 +35,6 @@ trait HttpGatewayTrait
      */
     abstract protected function mapResponse($success, $response);
 
-
     /**
      * Get error response from server or fallback to general error.
      *
