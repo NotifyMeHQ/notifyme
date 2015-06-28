@@ -14,6 +14,20 @@ namespace NotifyMeHQ\NotifyMe;
 trait HttpGatewayTrait
 {
     /**
+     * The http client.
+     *
+     * @var \GuzzleHttp\Client
+     */
+    protected $client;
+
+    /**
+     * The configuration options.
+     *
+     * @var string[]
+     */
+    protected $config;
+
+    /**
      * Get error response from server or fallback to general error.
      *
      * @param \GuzzleHttp\Message\Response $rawResponse
