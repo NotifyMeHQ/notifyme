@@ -30,7 +30,7 @@ trait HttpGatewayTrait
     /**
      * Get error response from server or fallback to general error.
      *
-     * @param \GuzzleHttp\Message\Response $rawResponse
+     * @param \GuzzleHttp\Message\ResponseInterface $rawResponse
      *
      * @return array
      */
@@ -42,7 +42,7 @@ trait HttpGatewayTrait
     /**
      * Get the default json response.
      *
-     * @param \GuzzleHttp\Message\Response $rawResponse
+     * @param \GuzzleHttp\Message\ResponseInterface $rawResponse
      *
      * @return array
      */
