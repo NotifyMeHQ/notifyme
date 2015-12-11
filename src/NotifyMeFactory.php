@@ -50,15 +50,15 @@ class NotifyMeFactory implements FactoryInterface
      */
     public function factory($name)
     {
-        if (isset($this->factories['name'])) {
-            return $this->factories['name'];
+        if (isset($this->factories[$name])) {
+            return $this->factories[$name];
         }
 
         $driver = ucfirst($name);
         $class = "NotifyMeHQ\\{$driver}\\{$driver}Factory";
 
         if (class_exists($class)) {
-            return $this->factories['name'] = new $class();
+            return $this->factories[$name] = new $class();
         }
 
         throw new InvalidArgumentException("Unsupported factory [$name].");
