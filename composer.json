@@ -1,0 +1,64 @@
+{
+    "name": "notifymehq/notifyme",
+    "description": "Provides a common interface for notification services",
+    "license": "MIT",
+    "keywords": ["notifymehq", "notifyme", "notifications", "integrations"],
+    "authors": [
+        {
+            "name": "James Brooks",
+            "email": "james@alt-three.com"
+        },
+        {
+            "name": "Graham Campbell",
+            "email": "graham@alt-three.com"
+        },
+        {
+            "name": "Joseph Cohen",
+            "email": "joe@alt-three.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "guzzlehttp/guzzle": "^5.3|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8|^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NotifyMeHQ\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NotifyMeHQ\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "notifymehq/ballou": "self.version",
+        "notifymehq/campfire": "self.version",
+        "notifymehq/contracts": "self.version",
+        "notifymehq/factory": "self.version",
+        "notifymehq/gitter": "self.version",
+        "notifymehq/hipchat": "self.version",
+        "notifymehq/http": "self.version",
+        "notifymehq/manager": "self.version",
+        "notifymehq/pagerduty": "self.version",
+        "notifymehq/pushover": "self.version",
+        "notifymehq/slack": "self.version",
+        "notifymehq/support": "self.version",
+        "notifymehq/twilio": "self.version",
+        "notifymehq/webhook": "self.version",
+        "notifymehq/yo": "self.version"
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
