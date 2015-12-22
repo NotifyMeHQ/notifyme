@@ -13,9 +13,9 @@ namespace NotifyMeHQ\Adapters\Hipchat;
 
 use GuzzleHttp\Client;
 use NotifyMeHQ\Contracts\GatewayInterface;
-use NotifyMeHQ\Support\Arr;
 use NotifyMeHQ\Http\GatewayTrait;
 use NotifyMeHQ\Http\Response;
+use NotifyMeHQ\Support\Arr;
 
 class HipchatGateway implements GatewayInterface
 {

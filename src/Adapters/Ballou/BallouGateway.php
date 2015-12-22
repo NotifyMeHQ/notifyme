@@ -13,8 +13,8 @@ namespace NotifyMeHQ\Adapters\Ballou;
 
 use GuzzleHttp\Client;
 use NotifyMeHQ\Contracts\GatewayInterface;
-use NotifyMeHQ\Support\Arr;
 use NotifyMeHQ\Http\Response;
+use NotifyMeHQ\Support\Arr;
 
 class BallouGateway implements GatewayInterface
 {

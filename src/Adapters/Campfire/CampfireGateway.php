@@ -13,9 +13,9 @@ namespace NotifyMeHQ\Adapters\Campfire;
 
 use GuzzleHttp\Client;
 use NotifyMeHQ\Adapters\Contracts\GatewayInterface;
-use NotifyMeHQ\Support\Arr;
 use NotifyMeHQ\Http\GatewayTrait;
 use NotifyMeHQ\Http\Response;
+use NotifyMeHQ\Support\Arr;
 
 class CampfireGateway implements GatewayInterface
 {
