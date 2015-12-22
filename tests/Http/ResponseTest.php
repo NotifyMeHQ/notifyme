@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use NotifyMeHQ\NotifyMe\Response;
+namespace NotifyMeHQ\Tests\Http;
+
+use NotifyMeHQ\Http\Response;
+use PHPUnit_Framework_TestCase;
 
 class ResponseTest extends PHPUnit_Framework_TestCase
 {

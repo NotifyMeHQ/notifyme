@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use NotifyMeHQ\NotifyMe\Arr;
+namespace NotifyMeHQ\Tests\Support;
+
+use NotifyMeHQ\Support\Arr;
+use PHPUnit_Framework_TestCase;
 
 class ArrTest extends PHPUnit_Framework_TestCase
 {

@@ -1,0 +1,41 @@
+{
+    "name": "notifymehq/gitter",
+    "description": "Provides a gitter gateway for notifyme",
+    "license": "MIT",
+    "keywords": ["notifymehq", "notifyme", "gitter"],
+    "authors": [
+        {
+            "name": "James Brooks",
+            "email": "james@alt-three.com"
+        },
+        {
+            "name": "Graham Campbell",
+            "email": "graham@alt-three.com"
+        },
+        {
+            "name": "Joseph Cohen",
+            "email": "joe@alt-three.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "notifymehq/contracts": "^1.0",
+        "notifymehq/http": "^1.0",
+        "notifymehq/support": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NotifyMeHQ\\Adapters\\Gitter\\": ""
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

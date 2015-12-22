@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace NotifyMeHQ\NotifyMe;
+namespace NotifyMeHQ\Http;
 
-trait HttpGatewayTrait
+trait GatewayTrait
 {
     /**
      * The http client.

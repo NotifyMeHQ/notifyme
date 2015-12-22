@@ -19,30 +19,37 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "notifymehq/contracts": "~1.0"
+        "guzzlehttp/guzzle": "^5.3|^6.0",
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "^4.8|^5.0"
     },
     "autoload": {
         "psr-4": {
-            "NotifyMeHQ\\NotifyMe\\": "src/"
+            "NotifyMeHQ\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NotifyMeHQ\\NotifyMe\\Tests\\": "tests/"
+            "NotifyMeHQ\\Tests\\": "tests/"
         }
     },
-    "suggest": {
-        "notifymehq/campfire": "Campfire gateway for NotifyMe.",
-        "notifymehq/gitter": "Gitter gateway for NotifyMe.",
-        "notifymehq/hipchat": "HipChat gateway for NotifyMe.",
-        "notifymehq/pagerduty": "Pagerduty gateway for NotifyMe.",
-        "notifymehq/pushover": "Pushover gateway for NotifyMe.",
-        "notifymehq/slack": "Slack gateway for NotifyMe.",
-        "notifymehq/twilio": "Twilio gateway for NotifyMe.",
-        "notifymehq/webhook": "Webhook gateway for NotifyMe."
+    "replace": {
+        "notifymehq/ballou": "self.version",
+        "notifymehq/campfire": "self.version",
+        "notifymehq/contracts": "self.version",
+        "notifymehq/factory": "self.version",
+        "notifymehq/gitter": "self.version",
+        "notifymehq/hipchat": "self.version",
+        "notifymehq/http": "self.version",
+        "notifymehq/manager": "self.version",
+        "notifymehq/pagerduty": "self.version",
+        "notifymehq/pushover": "self.version",
+        "notifymehq/slack": "self.version",
+        "notifymehq/support": "self.version",
+        "notifymehq/twilio": "self.version",
+        "notifymehq/webhook": "self.version",
+        "notifymehq/yo": "self.version",
     },
     "config": {
         "preferred-install": "dist"

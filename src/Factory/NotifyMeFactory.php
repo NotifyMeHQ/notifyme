@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace NotifyMeHQ\NotifyMe;
+namespace NotifyMeHQ\Factory;
 
 use InvalidArgumentException;
 use NotifyMeHQ\Contracts\FactoryInterface;
@@ -54,13 +54,24 @@ class NotifyMeFactory implements FactoryInterface
             return $this->factories[$name];
         }
 
-        $driver = ucfirst($name);
-        $class = "NotifyMeHQ\\{$driver}\\{$driver}Factory";
-
-        if (class_exists($class)) {
+        if (class_exists($class = $this->inflect($name))) {
             return $this->factories[$name] = new $class();
         }
 
         throw new InvalidArgumentException("Unsupported factory [$name].");
+    }
+
+    /**
+     * Get the factory class name from the driver name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function inflect($name)
+    {
+        $driver = ucfirst($name);
+
+        return "NotifyMeHQ\\Adapters\\{$driver}\\{$driver}Factory";
     }
 }

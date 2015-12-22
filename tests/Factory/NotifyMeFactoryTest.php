@@ -9,24 +9,22 @@
  * file that was distributed with this source code.
  */
 
-use NotifyMeHQ\NotifyMe\NotifyMeFactory;
+namespace NotifyMeHQ\Tests\Factory;
+
+use NotifyMeHQ\Factory\NotifyMeFactory;
+use PHPUnit_Framework_TestCase;
 
 class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
 {
-    protected $factory;
-
-    protected function setUp()
-    {
-        $this->factory = new NotifyMeFactory();
-    }
-
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A driver must be specified.
      */
     public function testNoDriverSpecified()
     {
-        $this->factory->make([]);
+        $factory = new NotifyMeFactory();
+
+        $factory->make([]);
     }
 
     /**
@@ -35,7 +33,9 @@ class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testNoSupportedDriverSpecified()
     {
-        $this->factory->make(['driver' => 'foo']);
+        $factory = new NotifyMeFactory();
+
+        $factory->make(['driver' => 'foo']);
     }
 
     /**
@@ -44,6 +44,8 @@ class NotifyMeFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testNoSupportedFactorySpecified()
     {
-        $this->factory->factory('bar');
+        $factory = new NotifyMeFactory();
+
+        $factory->factory('bar');
     }
 }

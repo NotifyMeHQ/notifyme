@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace NotifyMeHQ\NotifyMe;
+namespace NotifyMeHQ\Http;
 
 use NotifyMeHQ\Contracts\ResponseInterface;
 

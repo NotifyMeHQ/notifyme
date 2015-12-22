@@ -1,0 +1,41 @@
+{
+    "name": "notifymehq/pagerduty",
+    "description": "Provides a pagerduty gateway for notifyme",
+    "license": "MIT",
+    "keywords": ["notifymehq", "notifyme", "pagerduty"],
+    "authors": [
+        {
+            "name": "James Brooks",
+            "email": "james@alt-three.com"
+        },
+        {
+            "name": "Graham Campbell",
+            "email": "graham@alt-three.com"
+        },
+        {
+            "name": "Joseph Cohen",
+            "email": "joe@alt-three.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "notifymehq/contracts": "^1.0",
+        "notifymehq/http": "^1.0",
+        "notifymehq/support": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NotifyMeHQ\\Adapters\\Pagerduty\\": ""
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
