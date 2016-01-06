@@ -101,7 +101,7 @@ class SlackGateway implements GatewayInterface
             'headers'         => [
                 'Accept' => 'application/json',
             ],
-            'form_params' => $params,
+            'body' => $params,
         ]);
 
         if (substr((string) $rawResponse->getStatusCode(), 0, 1) === '2') {
