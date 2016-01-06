@@ -12,6 +12,7 @@
 namespace NotifyMeHQ\Adapters\Pushover;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use NotifyMeHQ\Contracts\GatewayInterface;
 use NotifyMeHQ\Http\GatewayTrait;
 use NotifyMeHQ\Http\Response;
@@ -116,6 +117,13 @@ class PushoverGateway implements GatewayInterface
     {
         $success = false;
 
+        // GuzzleHttp Version < 6
+        $param_querystring = 'body';
+        // GuzzleHttp Version = 6
+        if ( version_compare( ClientInterface::VERSION, '6' ) === 1 ) {
+            $param_querystring = 'form_params';      
+        }
+
         $rawResponse = $this->client->post($url, [
             'exceptions'      => false,
             'timeout'         => '80',
@@ -124,7 +132,7 @@ class PushoverGateway implements GatewayInterface
                 'Accept'       => 'application/json',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => $params,
+            $param_querystring => $params
         ]);
 
         if (substr((string) $rawResponse->getStatusCode(), 0, 1) === '2') {
