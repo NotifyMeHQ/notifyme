@@ -56,6 +56,9 @@ class SlackGateway implements GatewayInterface
             'token'        => $this->config['token'],
             'username'     => $this->config['from'],
             'as_user'      => $this->config['as_user'],
+            'icon_emoji'   => $this->config['icon_emoji'],
+            'icon_url'     => $this->config['icon_url'],
+            'link_names'   => $this->config['link_names'],
             'channel'      => $to,
             'text'         => $this->formatMessage($message),
         ];
