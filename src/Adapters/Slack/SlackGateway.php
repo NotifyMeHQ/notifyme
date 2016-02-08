@@ -12,6 +12,7 @@
 namespace NotifyMeHQ\Adapters\Slack;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use NotifyMeHQ\Contracts\GatewayInterface;
 use NotifyMeHQ\Http\GatewayTrait;
 use NotifyMeHQ\Http\Response;
@@ -56,6 +57,9 @@ class SlackGateway implements GatewayInterface
             'token'        => $this->config['token'],
             'username'     => $this->config['from'],
             'as_user'      => $this->config['as_user'],
+            'icon_emoji'   => $this->config['icon_emoji'],
+            'icon_url'     => $this->config['icon_url'],
+            'link_names'   => $this->config['link_names'],
             'channel'      => $to,
             'text'         => $this->formatMessage($message),
         ];
@@ -91,6 +95,13 @@ class SlackGateway implements GatewayInterface
     {
         $success = false;
 
+        // GuzzleHttp Version < 6
+        $param_querystring = 'body';
+        // GuzzleHttp Version = 6
+        if ( version_compare( ClientInterface::VERSION, '6' ) === 1 ) {
+            $param_querystring = 'form_params';      
+        }
+
         $rawResponse = $this->client->post($url, [
             'exceptions'      => false,
             'timeout'         => '80',
@@ -98,7 +109,7 @@ class SlackGateway implements GatewayInterface
             'headers'         => [
                 'Accept' => 'application/json',
             ],
-            'body' => $params,
+            $param_querystring => $params
         ]);
 
         if (substr((string) $rawResponse->getStatusCode(), 0, 1) === '2') {
