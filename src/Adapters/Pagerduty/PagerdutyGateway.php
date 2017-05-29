@@ -60,13 +60,14 @@ class PagerdutyGateway implements GatewayInterface
     public function notify($to, $message)
     {
         $params = [
-            'to'          => $to,
-            'service_key' => $this->config['token'],
-            'event_type'  => Arr::get($this->config, 'event_type', 'trigger'),
-            'client'      => Arr::get($this->config, 'client', null),
-            'client_url'  => Arr::get($this->config, 'client_url', null),
-            'details'     => Arr::get($this->config, 'details', null),
-            'description' => $message,
+            'to'            => $to,
+            'service_key'   => $this->config['token'],
+            'event_type'    => Arr::get($this->config, 'event_type', 'trigger'),
+            'client'        => Arr::get($this->config, 'client', null),
+            'client_url'    => Arr::get($this->config, 'client_url', null),
+            'details'       => Arr::get($this->config, 'details', null),
+            'incident_key'  => Arr::get($this->config, 'incident_key', null),
+            'description'   => $message,
         ];
 
         return $this->send($this->buildUrlFromString('create_event.json'), $params);
